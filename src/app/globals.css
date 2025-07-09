@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    --font-sans: var(--font-montserrat);
+    --font-mono: var(--font-geist-mono);
+    --font-serif: var(--font-playfair);
+  }
+}
+
+@layer utilities {
+  .font-playfair {
+    font-family: var(--font-playfair);
+  }
+ 
+  .font-montserrat {
+    font-family: var(--font-montserrat);
+  }
+ 
+  .font-geist-sans {
+    font-family: var(--font-geist-sans);
+  }
+ 
+  .font-geist-mono {
+    font-family: var(--font-geist-mono);
+  }
+  
+  .grid-background {
+    background-image: 
+      linear-gradient(to right, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness)),
+      linear-gradient(to bottom, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness));
+    background-size: var(--grid-size) var(--grid-size);
+  }
+}
+
+/* Your existing CSS */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --grid-color: rgba(249, 115, 22, 0.1);
+  --grid-size: 40px;
+  --grid-thickness: 1px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --grid-color: rgba(249, 115, 22, 0.05); 
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.grid-background {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to right, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness)),
+    linear-gradient(to bottom, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness));
+  background-size: var(--grid-size) var(--grid-size);
+  pointer-events: none; 
+  z-index: 0; 
+}
+
+.grid-background-fade {
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  
+}
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("/noise.png");
+  opacity: var(--noise-opacity, 0.05);
+  animation: static-flicker 0.15s infinite linear;
+}
+
+@keyframes static-flicker {
+  0%, 100% {
+    opacity: var(--noise-opacity, 0.05);
+  }
+  50% {
+    opacity: calc(var(--noise-opacity, 0.05) * 1.2); /* Fixed the typo here */
+  }
 }
