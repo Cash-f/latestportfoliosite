@@ -6,7 +6,7 @@ import ScrollFloat from '@/blocks/TextAnimations/ScrollFloat/ScrollFloat';
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 bg-gray-800">
+    <section id="contact" className="py-5 bg-black">
       <div className="container mx-auto px-8 text-center max-w-3xl">
         
         <ScrollFloat
@@ -23,31 +23,28 @@ const Contact = () => {
 
         <div className="mt-10 space-y-6">
           <div className="flex items-center justify-center gap-x-4">
-            <span className="text-orange-500 text-3xl">📧</span>
+            <img
+            src="/Logos/email.png"
+            alt="Email Logo"
+            className="h-10 w-10"
+            />
             <a
-              href="mailto:your.email@example.com"
+              href="mailto:ashfarmerch@gmail.com"
               className="text-white text-xl md:text-2xl font-bold hover:text-orange-400 transition-colors duration-300 font-montserrat"
             >
-              your.email@example.com
+              ashfarmerch@gmail.com
             </a>
           </div>
 
-          <div className="flex items-center justify-center gap-x-4">
-            <span className="text-orange-500 text-3xl">🔗</span>
-            <a
-              href="https://linkedin.com/in/yourprofile"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white text-xl md:text-2xl font-bold hover:text-orange-400 transition-colors duration-300 font-montserrat"
-            >
-              LinkedIn Profile
-            </a>
-          </div>
 
           <div className="flex items-center justify-center gap-x-4">
-            <span className="text-orange-500 text-3xl">💻</span>
+            <img
+            src="/Logos/github.png"
+            alt="GitHub Logo"
+            className="h-8 w-8"
+            />
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/Cash-f"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white text-xl md:text-2xl font-bold hover:text-orange-400 transition-colors duration-300 font-montserrat"

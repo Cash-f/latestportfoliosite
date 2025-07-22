@@ -53,7 +53,7 @@ const Header = () => {
             className="flex items-center bg-orange-500 text-white text-sm font-bold tracking-wider uppercase py-3 px-5 rounded-md hover:bg-orange-600 transition-colors duration-200"
           >
             Let's Chat
-            <span className="w-2 h-2 bg-white ml-3"></span>
+            <span className="w-2 h-2 bg-white ml-3 animate-flash"></span>
           </a>
         </div>
       </div>

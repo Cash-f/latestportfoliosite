@@ -79,6 +79,16 @@ body {
   position: relative;
 }
 
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  
+.animate-flash {
+  animation: flash 1.5s infinite alternate; 
+}
+
 .noise-overlay::after {
   content: "";
   position: absolute;

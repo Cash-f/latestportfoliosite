@@ -11,7 +11,7 @@ const ProjectCard = ({ project, onClick }) => {
   return (
     <div
       onClick={() => onClick(project)}
-      className="group block bg-gray-800 rounded-lg overflow-hidden border-2 border-transparent hover:border-orange-500 transition-all duration-300 cursor-pointer"
+      className="group block bg-black rounded-lg overflow-hidden border-2 border-transparent hover:border-orange-500 transition-all duration-300 cursor-pointer"
     >
       {/* Project Image */}
       <div className="overflow-hidden">
@@ -27,13 +27,13 @@ const ProjectCard = ({ project, onClick }) => {
         {/* Title */}
         <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
 
-        {/* Your Role */}
+        
         <p className="text-orange-400 font-semibold mb-4">{project.role}</p>
 
-        {/* Tech Stack Pills */}
+        
         <div className="flex flex-wrap gap-2">
           {project.tech && project.tech.map((item) => (
-            <span key={item} className="bg-gray-700 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full">
+            <span key={item} className="bg-orange-500 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full">
               {item}
             </span>
           ))}
@@ -113,16 +113,11 @@ const Features = () => {
   return (
     <section id="projects" className="py-20">
       <div className="container mx-auto px-8">
-        {/* Replace ScrollReveal with ScrollFloat */}
+        
         <ScrollFloat
           containerClassName="text-center mb-12"
           textClassName="text-4xl md:text-5xl font-bold text-white font-montserrat"
-          // Optional: Customize ScrollFloat specific props here
-          // animationDuration={1.2}
-          // ease="power3.out"
-          // scrollStart="top center"
-          // scrollEnd="bottom top"
-          // stagger={0.08}
+          
         >
           Recent Projects
         </ScrollFloat>
@@ -136,7 +131,22 @@ const Features = () => {
             />
           ))}
         </div>
+        <div className="mt-12 text-center">
+          <p className="text-lg text-gray-300 font-montserrat">
+            Interested in more details about my projects? Click on any project card to learn more! 
+          </p>
       </div>
+      <div className="mt-12 text-center">
+          <a
+            href="/all-projects" 
+            className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
+          >
+            View More Projects
+          </a>
+        </div>
+      </div>
+
+      {/* Modal for Project Details */}
 
       <ProjectModal
         project={selectedProject}
