@@ -1,22 +1,18 @@
-import React from 'react';
+// src/components/Header.js
+import React from "react";
 
 const NavItem = ({ href, children }) => {
   return (
     <li>
-      
-      <a 
-        href={href} 
+      <a
+        href={href}
         className="group relative flex items-center h-6 overflow-hidden text-sm font-medium tracking-wider uppercase"
       >
-        
         <span className="absolute left-0 w-2 h-2 bg-orange-500 mr-3"></span>
-        
-        
         <div className="relative pl-5 transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
-          
-          <span className="block text-gray-300 group-hover:text-white">{children}</span>
-          
-          
+          <span className="block text-gray-300 group-hover:text-white">
+            {children}
+          </span>
           <span className="block absolute top-full text-white">{children}</span>
         </div>
       </a>
@@ -26,14 +22,13 @@ const NavItem = ({ href, children }) => {
 
 const Header = () => {
   return (
-    <header className="py-8 relative z-20">
+    <header className="py-8 fixed top-0 left-0 w-full z-[9999]">
       <div className="container mx-auto flex justify-between items-center bg-black rounded-xl py-4 px-8">
         <div className="flex-shrink-0">
           <a href="#" className="flex items-center h-12 px-4">
-            
-            <img 
+            <img
               src="/Logos/maybeworkinglogo.png"
-              alt="Logo" 
+              alt="Logo"
               className="h-10 w-auto"
             />
           </a>
@@ -48,8 +43,8 @@ const Header = () => {
         </nav>
 
         <div className="flex-shrink-0">
-          <a 
-            href="#" 
+          <a
+            href="#"
             className="flex items-center bg-orange-500 text-white text-sm font-bold tracking-wider uppercase py-3 px-5 rounded-md hover:bg-orange-600 transition-colors duration-200"
           >
             Let's Chat

@@ -1,32 +1,28 @@
-'use client'; 
+"use client";
 
-import React from 'react';
+import React from "react";
+import SectionTitleAnimated from "@/components/SectionTitleAnimated";
 
-import ScrollFloat from '@/blocks/TextAnimations/ScrollFloat/ScrollFloat';
-
-const Contact = () => {
+const Contact = ({ className }) => {
   return (
-    <section id="contact" className="py-5 bg-black">
+    <section id="contact" className={`py-5 bg-black ${className}`}>
       <div className="container mx-auto px-8 text-center max-w-3xl">
-        
-        <ScrollFloat
-          containerClassName="mb-12"
-          textClassName="text-4xl md:text-5xl font-bold text-white font-playfair"
-          
-        >
-          Get in Touch
-        </ScrollFloat>
+        <SectionTitleAnimated colorClass="text-orange-500">
+          Contact Me
+        </SectionTitleAnimated>
 
         <p className="mt-8 text-lg text-gray-300 leading-relaxed font-montserrat">
-          I'm always open to new opportunities, collaborations, and conversations. Whether you have a project in mind, a question, or just want to connect, feel free to reach out!
+          I'm always open to new opportunities, collaborations, and
+          conversations. Whether you have a project in mind, a question, or just
+          want to connect, feel free to reach out!
         </p>
 
         <div className="mt-10 space-y-6">
           <div className="flex items-center justify-center gap-x-4">
             <img
-            src="/Logos/email.png"
-            alt="Email Logo"
-            className="h-10 w-10"
+              src="/Logos/email.png"
+              alt="Email Logo"
+              className="h-10 w-10"
             />
             <a
               href="mailto:ashfarmerch@gmail.com"
@@ -36,12 +32,11 @@ const Contact = () => {
             </a>
           </div>
 
-
           <div className="flex items-center justify-center gap-x-4">
             <img
-            src="/Logos/github.png"
-            alt="GitHub Logo"
-            className="h-8 w-8"
+              src="/Logos/github.png"
+              alt="GitHub Logo"
+              className="h-8 w-8"
             />
             <a
               href="https://github.com/Cash-f"

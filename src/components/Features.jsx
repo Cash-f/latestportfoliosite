@@ -1,12 +1,9 @@
-// src/components/Features.js
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import SectionTitleAnimated from "@/components/SectionTitleAnimated";
+import ProjectModal from "./ProjectModal";
 
-import ScrollFloat from '@/blocks/TextAnimations/ScrollFloat/ScrollFloat'; 
-import ProjectModal from './ProjectModal'; 
-
-// A single Project Card component for cleanliness
 const ProjectCard = ({ project, onClick }) => {
   return (
     <div
@@ -27,23 +24,25 @@ const ProjectCard = ({ project, onClick }) => {
         {/* Title */}
         <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
 
-        
         <p className="text-orange-400 font-semibold mb-4">{project.role}</p>
 
-        
         <div className="flex flex-wrap gap-2">
-          {project.tech && project.tech.map((item) => (
-            <span key={item} className="bg-orange-500 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full">
-              {item}
-            </span>
-          ))}
+          {project.tech &&
+            project.tech.map((item) => (
+              <span
+                key={item}
+                className="bg-orange-500 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full"
+              >
+                {item}
+              </span>
+            ))}
         </div>
       </div>
     </div>
   );
 };
 
-const Features = () => {
+const Features = ({ className }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -52,52 +51,64 @@ const Features = () => {
       title: "Project Cyberscape",
       role: "Lead Gameplay Programmer",
       tech: ["Unity", "C#", "HLSL", "Photon"],
-      imageUrl: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      longDescription: "A fast-paced multiplayer arena shooter set in a dystopian future. Developed with Unity, focusing on responsive controls and network synchronization. Implemented custom shader effects for unique visual feedback.",
+      imageUrl:
+        "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      longDescription:
+        "A fast-paced multiplayer arena shooter set in a dystopian future. Developed with Unity, focusing on responsive controls and network synchronization. Implemented custom shader effects for unique visual feedback.",
       features: [
         "Real-time multiplayer with Photon PUN 2.",
         "Customizable character loadouts and abilities.",
         "Dynamic environment destruction.",
-        "Procedural level generation for unique matches."
+        "Procedural level generation for unique matches.",
       ],
-      challenges: "Synchronizing fast-moving projectiles and player states across a network with minimal latency was a significant challenge. We utilized client-side prediction and server reconciliation to achieve a smooth player experience.",
+      challenges:
+        "Synchronizing fast-moving projectiles and player states across a network with minimal latency was a significant challenge. We utilized client-side prediction and server reconciliation to achieve a smooth player experience.",
       links: [
-        { text: "View GitHub", url: "https://github.com/yourusername/cyberscape" },
-        { text: "Watch Trailer", url: "https://youtube.com/yourtrailer" }
-      ]
+        {
+          text: "View GitHub",
+          url: "https://github.com/yourusername/cyberscape",
+        },
+        { text: "Watch Trailer", url: "https://youtube.com/yourtrailer" },
+      ],
     },
     {
       title: "Pixel Raiders",
       role: "Solo Developer",
       tech: ["Godot", "GDScript", "Aseprite"],
-      imageUrl: "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      longDescription: "A retro-style 2D platformer with rogue-like elements. Explored procedural generation for levels and item drops. All art assets created using Aseprite.",
+      imageUrl:
+        "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      longDescription:
+        "A retro-style 2D platformer with rogue-like elements. Explored procedural generation for levels and item drops. All art assets created using Aseprite.",
       features: [
         "Procedural level generation.",
         "Randomized item and enemy spawns.",
         "Challenging boss battles with unique mechanics.",
-        "Dynamic pixel art animations."
+        "Dynamic pixel art animations.",
       ],
-      challenges: "Balancing difficulty with progression in a rogue-like was tricky. Iterative design and extensive playtesting were key to finding the sweet spot, ensuring replayability without feeling unfair.",
+      challenges:
+        "Balancing difficulty with progression in a rogue-like was tricky. Iterative design and extensive playtesting were key to finding the sweet spot, ensuring replayability without feeling unfair.",
       links: [
-        { text: "Play Demo", url: "https://yourgame.itch.io/pixelraiders" }
-      ]
+        { text: "Play Demo", url: "https://yourgame.itch.io/pixelraiders" },
+      ],
     },
     {
       title: "Aetheria Chronicles",
       role: "UI/UX & Systems Designer",
       tech: ["Unreal Engine", "Blueprints", "C++"],
-      imageUrl: "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      longDescription: "A narrative-driven RPG focusing on player choice and immersive world-building. My role involved designing intuitive user interfaces and robust gameplay systems within Unreal Engine.",
+      imageUrl:
+        "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      longDescription:
+        "A narrative-driven RPG focusing on player choice and immersive world-building. My role involved designing intuitive user interfaces and robust gameplay systems within Unreal Engine.",
       features: [
         "Branching dialogue and quest systems.",
         "Modular inventory and crafting UI.",
         "Dynamic character ability trees.",
-        "Integration of C++ for performance-critical systems."
+        "Integration of C++ for performance-critical systems.",
       ],
-      challenges: "Creating a highly modular UI system in Unreal Engine, allowing designers to easily create new screens without programmer intervention, required careful planning of UMG widgets and data structures.",
-      links: []
-    }
+      challenges:
+        "Creating a highly modular UI system in Unreal Engine, allowing designers to easily create new screens without programmer intervention, required careful planning of UMG widgets and data structures.",
+      links: [],
+    },
   ];
 
   const openModal = (project) => {
@@ -111,16 +122,11 @@ const Features = () => {
   };
 
   return (
-    <section id="projects" className="py-20">
+    <section id="projects" className={`py-20 ${className}`}>
       <div className="container mx-auto px-8">
-        
-        <ScrollFloat
-          containerClassName="text-center mb-12"
-          textClassName="text-4xl md:text-5xl font-bold text-white font-montserrat"
-          
-        >
+        <SectionTitleAnimated colorClass="text-orange-500">
           Recent Projects
-        </ScrollFloat>
+        </SectionTitleAnimated>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
@@ -133,20 +139,19 @@ const Features = () => {
         </div>
         <div className="mt-12 text-center">
           <p className="text-lg text-gray-300 font-montserrat">
-            Interested in more details about my projects? Click on any project card to learn more! 
+            Interested in more details about my projects? Click on any project
+            card to learn more!
           </p>
-      </div>
-      <div className="mt-12 text-center">
+        </div>
+        <div className="mt-12 text-center">
           <a
-            href="/all-projects" 
+            href="/all-projects"
             className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
           >
             View More Projects
           </a>
         </div>
       </div>
-
-      {/* Modal for Project Details */}
 
       <ProjectModal
         project={selectedProject}

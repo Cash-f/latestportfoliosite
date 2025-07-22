@@ -1,38 +1,37 @@
-'use client'; 
+"use client";
 
-import React, { useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; 
-
-
+import React, { useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProjectModal = ({ project, onClose, isOpen }) => {
-  
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = ''; 
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  
-  const handleEscapeKey = useCallback((event) => {
-    if (event.key === 'Escape' && isOpen) {
-      onClose();
-    }
-  }, [isOpen, onClose]);
+  const handleEscapeKey = useCallback(
+    (event) => {
+      if (event.key === "Escape" && isOpen) {
+        onClose();
+      }
+    },
+    [isOpen, onClose]
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEscapeKey);
+    document.addEventListener("keydown", handleEscapeKey);
     return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [handleEscapeKey]);
 
-  if (!project) return null; 
+  if (!project) return null;
 
   return (
     <AnimatePresence>
@@ -43,7 +42,6 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
-          
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.7 }}
@@ -52,7 +50,6 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             className="absolute inset-0 bg-black backdrop-blur-sm"
           ></motion.div>
 
-          
           <motion.div
             initial={{ y: "100vh", opacity: 0 }}
             animate={{ y: "0", opacity: 1 }}
@@ -60,16 +57,14 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             className="relative bg-gray-900 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
           >
-            
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
               aria-label="Close modal"
             >
-              &times;
+              ×
             </button>
 
-            
             {project.imageUrl && (
               <img
                 src={project.imageUrl}
@@ -78,32 +73,37 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               />
             )}
 
-            
             <h2 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4 font-playfair">
               {project.title}
             </h2>
 
-            
-            <p className="text-orange-400 font-semibold mb-4 text-lg">{project.role}</p>
+            <p className="text-orange-400 font-semibold mb-4 text-lg">
+              {project.role}
+            </p>
             <div className="flex flex-wrap gap-2 mb-6">
-              {project.tech && project.tech.map((item) => (
-                <span key={item} className="bg-gray-700 text-gray-300 text-sm font-semibold px-4 py-1 rounded-full">
-                  {item}
-                </span>
-              ))}
+              {project.tech &&
+                project.tech.map((item) => (
+                  <span
+                    key={item}
+                    className="bg-gray-700 text-gray-300 text-sm font-semibold px-4 py-1 rounded-full"
+                  >
+                    {item}
+                  </span>
+                ))}
             </div>
 
-            
             <div className="text-gray-300 leading-relaxed font-montserrat">
               {project.longDescription ? (
                 <p>{project.longDescription}</p>
               ) : (
                 <p>No detailed description available for this project yet.</p>
               )}
-              
+
               {project.features && (
                 <>
-                  <h3 className="text-xl font-bold text-white mt-6 mb-2">Key Features:</h3>
+                  <h3 className="text-xl font-bold text-white mt-6 mb-2">
+                    Key Features:
+                  </h3>
                   <ul className="list-disc list-inside space-y-1">
                     {project.features.map((feature, index) => (
                       <li key={index}>{feature}</li>
@@ -113,13 +113,14 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               )}
               {project.challenges && (
                 <>
-                  <h3 className="text-xl font-bold text-white mt-6 mb-2">Challenges & Solutions:</h3>
+                  <h3 className="text-xl font-bold text-white mt-6 mb-2">
+                    Challenges & Solutions:
+                  </h3>
                   <p>{project.challenges}</p>
                 </>
               )}
             </div>
 
-            
             {project.links && project.links.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-4">
                 {project.links.map((link, index) => (
