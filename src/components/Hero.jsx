@@ -18,15 +18,6 @@ const Hero = ({ className }) => {
           animation pipelines and 3D asset creation workflows allowing me to
           help ensure seamless integration across every stage of development.
         </p>
-
-        <div className="mt-10 flex items-center gap-x-6">
-          <a
-            href="#projects"
-            className="bg-accent hover:bg-accent-hover text-foreground font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
-          >
-            View Projects
-          </a>
-        </div>
       </div>
     </section>
   );

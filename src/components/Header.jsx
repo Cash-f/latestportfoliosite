@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link"; // Import the Link component
 
 const NavItem = ({ href, children }) => {
   return (
@@ -28,7 +29,6 @@ const Header = ({ hideOnModal }) => {
 
   const handleMailClick = () => {
     setButtonText("Opening Mail...");
-
     setTimeout(() => {
       setButtonText("Let's Chat");
     }, 2000);
@@ -37,20 +37,21 @@ const Header = ({ hideOnModal }) => {
   return (
     <header
       className={`
- py-8 fixed top-0 left-0 w-full z-[9999]
- transition-opacity duration-300 ease-in-out
-  ${hideOnModal ? "opacity-0 pointer-events-none" : "opacity-100"}
- `}
+        py-8 fixed top-0 left-0 w-full z-[9999]
+        transition-opacity duration-300 ease-in-out
+        ${hideOnModal ? "opacity-0 pointer-events-none" : "opacity-100"}
+      `}
     >
       <div className="container mx-auto flex justify-between items-center bg-neutral-darkest rounded-xl py-4 px-8">
         <div className="flex-shrink-0">
-          <a href="#" className="flex items-center h-12 px-4">
+          {/* 1. Replace the <a> tag with a <Link> component pointing to the home page */}
+          <Link href="/" className="flex items-center h-12 px-4">
             <img
               src="/Logos/maybeworkinglogo.png"
-              alt="Logo"
+              alt="Logo - Return to Home"
               className="h-10 w-auto"
             />
-          </a>
+          </Link>
         </div>
 
         <nav className="hidden md:flex">
@@ -62,13 +63,12 @@ const Header = ({ hideOnModal }) => {
         </nav>
 
         <div className="flex-shrink-0">
-          {/* 4. Update the button */}
           <a
-            href="mailto:ashfarmerch@gmail.com" // Set the mailto link
-            onClick={handleMailClick} // Add the click handler
+            href="mailto:ashfarmerch@gmail.com"
+            onClick={handleMailClick}
             className="flex items-center bg-accent text-foreground text-sm font-bold tracking-wider uppercase py-3 px-5 rounded-md hover:bg-accent-hover transition-colors duration-200"
           >
-            {buttonText} {/* Use the state variable for the text */}
+            {buttonText}
             <span className="w-2 h-2 bg-foreground ml-3 animate-flash"></span>
           </a>
         </div>

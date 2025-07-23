@@ -22,12 +22,12 @@ export default function HomePage() {
 
       <About className="min-h-screen snap-start flex flex-col justify-center" />
 
-      <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
-
       <Features
         className="min-h-screen snap-start flex flex-col justify-center"
         onModalToggle={handleProjectModalToggle}
       />
+
+      <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
 
       <Contact className="min-h-screen snap-start flex flex-col justify-center" />
     </main>
