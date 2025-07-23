@@ -1,37 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import SectionTitleAnimated from "@/components/SectionTitleAnimated";
 import ProjectModal from "./ProjectModal";
+import { motion } from "framer-motion";
 
 const ProjectCard = ({ project, onClick }) => {
   return (
     <div
       onClick={() => onClick(project)}
-      className="group block bg-black rounded-lg overflow-hidden border-2 border-transparent hover:border-orange-500 transition-all duration-300 cursor-pointer"
+      className="group block bg-card-background rounded-lg overflow-hidden border-2 border-transparent hover:border-accent transition-all duration-300 cursor-pointer"
     >
-      {/* Project Image */}
       <div className="overflow-hidden">
-        <img
+        <Image
           src={project.imageUrl}
           alt={`Screenshot of ${project.title}`}
+          width={600}
+          height={400}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
 
-      {/* Content Area */}
       <div className="p-6">
-        {/* Title */}
-        <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-2">
+          {project.title}
+        </h3>
 
-        <p className="text-orange-400 font-semibold mb-4">{project.role}</p>
+        <p className="text-accent-hover font-semibold mb-4">{project.role}</p>
 
         <div className="flex flex-wrap gap-2">
           {project.tech &&
             project.tech.map((item) => (
               <span
                 key={item}
-                className="bg-orange-500 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full"
+                className="bg-neutral-medium text-neutral-light text-xs font-semibold px-3 py-1 rounded-full"
               >
                 {item}
               </span>
@@ -42,17 +45,28 @@ const ProjectCard = ({ project, onClick }) => {
   );
 };
 
-const Features = ({ className }) => {
+const Features = ({ className, onModalToggle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
+  useEffect(() => {
+    if (onModalToggle) {
+      onModalToggle(isModalOpen);
+    }
+  }, [isModalOpen, onModalToggle]);
+
   const projects = [
     {
-      title: "Project Cyberscape",
-      role: "Lead Gameplay Programmer",
-      tech: ["Unity", "C#", "HLSL", "Photon"],
-      imageUrl:
-        "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      title: "Enviroment Design",
+      role: "Solo Developer",
+      tech: [
+        "Blender",
+        "Substance-Designer",
+        "Substance-Painter",
+        "Unreal Engine",
+      ],
+
+      imageUrl: "/Renders_Wireframes/BeachCampfire.png",
       longDescription:
         "A fast-paced multiplayer arena shooter set in a dystopian future. Developed with Unity, focusing on responsive controls and network synchronization. Implemented custom shader effects for unique visual feedback.",
       features: [
@@ -72,11 +86,16 @@ const Features = ({ className }) => {
       ],
     },
     {
-      title: "Pixel Raiders",
+      title: "Detailed 'Hero' Prop Creation",
       role: "Solo Developer",
-      tech: ["Godot", "GDScript", "Aseprite"],
-      imageUrl:
-        "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      tech: [
+        "Blender",
+        "Substance-Designer",
+        "Substance-Painter",
+        "Unreal Engine",
+      ],
+
+      imageUrl: "/Renders_Wireframes/image.png",
       longDescription:
         "A retro-style 2D platformer with rogue-like elements. Explored procedural generation for levels and item drops. All art assets created using Aseprite.",
       features: [
@@ -92,11 +111,11 @@ const Features = ({ className }) => {
       ],
     },
     {
-      title: "Aetheria Chronicles",
-      role: "UI/UX & Systems Designer",
+      title: "Advanced Weapon System",
+      role: "Solo Developer",
       tech: ["Unreal Engine", "Blueprints", "C++"],
-      imageUrl:
-        "https://images.pexels.com/photos/163036/mario-luigi-yoschi-figures-163036.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+
+      imageUrl: "/Renders_Wireframes/ZombieWaveGampeplayExample.png",
       longDescription:
         "A narrative-driven RPG focusing on player choice and immersive world-building. My role involved designing intuitive user interfaces and robust gameplay systems within Unreal Engine.",
       features: [
@@ -124,21 +143,25 @@ const Features = ({ className }) => {
   return (
     <section id="projects" className={`py-20 ${className}`}>
       <div className="container mx-auto px-8">
-        <SectionTitleAnimated colorClass="text-orange-500">
+        <SectionTitleAnimated colorClass="text-accent">
           Recent Projects
         </SectionTitleAnimated>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <ProjectCard
+          {projects.map((project, index) => (
+            <motion.div
               key={project.title}
-              project={project}
-              onClick={openModal}
-            />
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <ProjectCard project={project} onClick={openModal} />
+            </motion.div>
           ))}
         </div>
         <div className="mt-12 text-center">
-          <p className="text-lg text-gray-300 font-montserrat">
+          <p className="text-lg text-neutral-light font-montserrat">
             Interested in more details about my projects? Click on any project
             card to learn more!
           </p>
@@ -146,7 +169,7 @@ const Features = ({ className }) => {
         <div className="mt-12 text-center">
           <a
             href="/all-projects"
-            className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
+            className="inline-block bg-accent hover:bg-accent-hover text-foreground font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
           >
             View More Projects
           </a>

@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${playfair.variable} scroll-smooth`}
     >
-      <body className="antialiased font-montserrat bg-black text-white">
+      <body className="antialiased font-montserrat bg-background text-foreground">
         <GridBackground
           size={50}
           color="rgba(255, 255, 255, 0.05)"

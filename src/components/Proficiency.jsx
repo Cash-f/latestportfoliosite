@@ -71,7 +71,7 @@ const Proficiency = ({ className }) => {
   return (
     <section id="proficiency" className={`py-20 ${className}`}>
       <div className="container mx-auto px-8 text-center">
-        <SectionTitleAnimated colorClass="text-orange-500">
+        <SectionTitleAnimated colorClass="text-accent">
           My Toolset
         </SectionTitleAnimated>
 
@@ -79,7 +79,7 @@ const Proficiency = ({ className }) => {
           {softwareTools.map((tool, index) => (
             <motion.div
               key={index}
-              className="flex flex-col items-center p-6 bg-black rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 h-full justify-between"
+              className="flex flex-col items-center p-6 bg-neutral-dark rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 h-full justify-between"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -91,18 +91,18 @@ const Proficiency = ({ className }) => {
                   alt={`${tool.name} Logo`}
                   className="h-16 w-16 mb-4 object-contain"
                 />
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-xl font-semibold text-foreground mb-2">
                   {tool.name}
                 </h3>
-                <p className="text-sm text-gray-400 font-montserrat">
+                <p className="text-sm text-neutral-lighter font-montserrat">
                   {tool.description}
                 </p>
               </div>
 
               <div className="w-full">
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                <div className="w-full bg-neutral-medium rounded-full h-2.5">
                   <motion.div
-                    className="bg-orange-500 h-2.5 rounded-full"
+                    className="bg-accent h-2.5 rounded-full"
                     initial={{ width: 0 }}
                     whileInView={{ width: `${tool.proficiency}%` }}
                     viewport={{ once: true, amount: 0.3 }}
@@ -113,7 +113,7 @@ const Proficiency = ({ className }) => {
                     }}
                   ></motion.div>
                 </div>
-                <span className="text-xs text-gray-400 mt-1">
+                <span className="text-xs text-neutral-lighter mt-1">
                   {tool.proficiency}%
                 </span>
               </div>

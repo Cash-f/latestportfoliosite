@@ -1,92 +1,96 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-sans: var(--font-montserrat);
-    --font-mono: var(--font-geist-mono);
-    --font-serif: var(--font-playfair);
-  }
+@theme {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-accent-active: #c2410c;
+
+  --color-neutral-darkest: #000000;
+  --color-neutral-dark: #171717;
+  --color-neutral-medium: #374151;
+  --color-neutral-light: #d1d5db;
+  --color-neutral-lighter: #9ca3af;
+
+  --color-card-background: var(--color-neutral-dark);
+  --color-card-border: transparent;
+
+  --font-family-sans: var(--font-montserrat-static);
+  --font-family-mono: var(--font-geist-mono-static);
+  --font-family-serif: var(--font-playfair-static);
+}
+
+:root {
+  --font-montserrat-static: var(--font-montserrat);
+  --font-geist-mono-static: var(--font-geist-mono);
+  --font-playfair-static: var(--font-playfair);
+
+  --grid-color: rgba(249, 115, 22, 0.05);
+  --noise-opacity: 0.05;
+  --grid-size: 40px;
+  --grid-thickness: 1px;
 }
 
 @layer utilities {
   .font-playfair {
     font-family: var(--font-playfair);
   }
- 
+
   .font-montserrat {
     font-family: var(--font-montserrat);
   }
- 
+
   .font-geist-sans {
     font-family: var(--font-geist-sans);
   }
- 
+
   .font-geist-mono {
     font-family: var(--font-geist-mono);
   }
-  
+
   .grid-background {
-    background-image: 
-      linear-gradient(to right, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness)),
-      linear-gradient(to bottom, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness));
+    background-image: linear-gradient(
+        to right,
+        var(--grid-color) var(--grid-thickness),
+        transparent var(--grid-thickness)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--grid-color) var(--grid-thickness),
+        transparent var(--grid-thickness)
+      );
     background-size: var(--grid-size) var(--grid-size);
   }
-}
 
-/* Your existing CSS */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --grid-color: rgba(249, 115, 22, 0.1);
-  --grid-size: 40px;
-  --grid-thickness: 1px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --grid-color: rgba(249, 115, 22, 0.05); 
+  @keyframes flash {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-.grid-background {
-  position: absolute; 
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    linear-gradient(to right, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness)),
-    linear-gradient(to bottom, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness));
-  background-size: var(--grid-size) var(--grid-size);
-  pointer-events: none; 
-  z-index: 0; 
+  .animate-flash {
+    animation: flash 1.5s infinite alternate;
+  }
 }
 
 .grid-background-fade {
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
 }
+
 .noise-overlay {
   position: relative;
-}
-
-@keyframes flash {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  
-.animate-flash {
-  animation: flash 1.5s infinite alternate; 
 }
 
 .noise-overlay::after {
@@ -98,15 +102,16 @@ body {
   pointer-events: none;
   z-index: 1;
   background-image: url("/noise.png");
-  opacity: var(--noise-opacity, 0.05);
+  opacity: var(--noise-opacity);
   animation: static-flicker 0.15s infinite linear;
 }
 
 @keyframes static-flicker {
-  0%, 100% {
-    opacity: var(--noise-opacity, 0.05);
+  0%,
+  100% {
+    opacity: var(--noise-opacity);
   }
   50% {
-    opacity: calc(var(--noise-opacity, 0.05) * 1.2); /* Fixed the typo here */
+    opacity: calc(var(--noise-opacity) * 1.2);
   }
 }

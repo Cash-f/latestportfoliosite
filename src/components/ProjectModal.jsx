@@ -47,7 +47,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             animate={{ opacity: 0.7 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black backdrop-blur-sm"
+            className="absolute inset-0 bg-neutral-darkest backdrop-blur-sm"
           ></motion.div>
 
           <motion.div
@@ -55,11 +55,11 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             animate={{ y: "0", opacity: 1 }}
             exit={{ y: "100vh", opacity: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="relative bg-gray-900 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
+            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl"
+              className="absolute top-4 right-4 text-neutral-lighter hover:text-foreground text-2xl"
               aria-label="Close modal"
             >
               ×
@@ -73,11 +73,11 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               />
             )}
 
-            <h2 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4 font-playfair">
+            <h2 className="text-4xl md:text-5xl font-bold text-accent mb-4 font-playfair">
               {project.title}
             </h2>
 
-            <p className="text-orange-400 font-semibold mb-4 text-lg">
+            <p className="text-accent-hover font-semibold mb-4 text-lg">
               {project.role}
             </p>
             <div className="flex flex-wrap gap-2 mb-6">
@@ -85,14 +85,14 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                 project.tech.map((item) => (
                   <span
                     key={item}
-                    className="bg-gray-700 text-gray-300 text-sm font-semibold px-4 py-1 rounded-full"
+                    className="bg-neutral-medium text-neutral-light text-sm font-semibold px-4 py-1 rounded-full"
                   >
                     {item}
                   </span>
                 ))}
             </div>
 
-            <div className="text-gray-300 leading-relaxed font-montserrat">
+            <div className="text-neutral-light leading-relaxed font-montserrat">
               {project.longDescription ? (
                 <p>{project.longDescription}</p>
               ) : (
@@ -101,7 +101,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
 
               {project.features && (
                 <>
-                  <h3 className="text-xl font-bold text-white mt-6 mb-2">
+                  <h3 className="text-xl font-bold text-foreground mt-6 mb-2">
                     Key Features:
                   </h3>
                   <ul className="list-disc list-inside space-y-1">
@@ -113,7 +113,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               )}
               {project.challenges && (
                 <>
-                  <h3 className="text-xl font-bold text-white mt-6 mb-2">
+                  <h3 className="text-xl font-bold text-foreground mt-6 mb-2">
                     Challenges & Solutions:
                   </h3>
                   <p>{project.challenges}</p>
@@ -129,7 +129,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-md transition-colors duration-300"
+                    className="bg-accent hover:bg-accent-hover text-foreground font-bold py-2 px-6 rounded-md transition-colors duration-300"
                   >
                     {link.text}
                   </a>
