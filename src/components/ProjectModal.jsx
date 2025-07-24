@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useEffect, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import ModelViewer from "./ModelViewer";
+import CodeBlock from "./CodeBlock";
 
 const ProjectModal = ({ project, onClose, isOpen }) => {
   useEffect(() => {
@@ -66,9 +69,11 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             </button>
 
             {project.imageUrl && (
-              <img
+              <Image
                 src={project.imageUrl}
                 alt={project.title}
+                width={800}
+                height={450}
                 className="w-full h-auto max-h-80 object-cover rounded-md mb-6"
               />
             )}
@@ -92,16 +97,15 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                 ))}
             </div>
 
-            <div className="text-neutral-light leading-relaxed font-montserrat">
-              {project.longDescription ? (
-                <p>{project.longDescription}</p>
-              ) : (
-                <p>No detailed description available for this project yet.</p>
-              )}
+            <div className="text-neutral-light leading-relaxed font-montserrat space-y-6">
+              <p>
+                {project.longDescription ||
+                  "No detailed description available."}
+              </p>
 
               {project.features && (
-                <>
-                  <h3 className="text-xl font-bold text-foreground mt-6 mb-2">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">
                     Key Features:
                   </h3>
                   <ul className="list-disc list-inside space-y-1">
@@ -109,17 +113,51 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                       <li key={index}>{feature}</li>
                     ))}
                   </ul>
-                </>
+                </div>
               )}
+
               {project.challenges && (
-                <>
-                  <h3 className="text-xl font-bold text-foreground mt-6 mb-2">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">
                     Challenges & Solutions:
                   </h3>
                   <p>{project.challenges}</p>
-                </>
+                </div>
               )}
             </div>
+
+            {project.modelUrl && (
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Interactive 3D Model
+                </h3>
+                <ModelViewer modelUrl={project.modelUrl} />
+              </div>
+            )}
+
+            {project.topologyImageUrl && (
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Topology & Wireframe
+                </h3>
+                <Image
+                  src={project.topologyImageUrl}
+                  alt={`${project.title} topology wireframe`}
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto object-cover rounded-lg"
+                />
+              </div>
+            )}
+
+            {project.codeSnippets && (
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-foreground mb-4">
+                  Code Spotlight
+                </h3>
+                <CodeBlock snippets={project.codeSnippets} />
+              </div>
+            )}
 
             {project.links && project.links.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-4">
