@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const NavItem = ({ href, children }) => {
   return (
     <li>
-      <a
+      <Link
         href={href}
         className="group relative flex items-center h-6 overflow-hidden text-sm font-medium tracking-wider uppercase"
       >
@@ -20,7 +20,7 @@ const NavItem = ({ href, children }) => {
             {children}
           </span>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };
@@ -37,9 +37,9 @@ const Header = ({ hideOnModal }) => {
   };
 
   const navLinks = [
-    { href: "#projects", title: "Projects" },
-    { href: "#about", title: "About" },
-    { href: "#contact", title: "Contact" },
+    { href: "/#projects", title: "Projects" },
+    { href: "/#about", title: "About" },
+    { href: "/#contact", title: "Contact" },
   ];
 
   return (
@@ -119,13 +119,13 @@ const Header = ({ hideOnModal }) => {
               <ul className="flex flex-col items-center space-y-8">
                 {navLinks.map((link) => (
                   <li key={link.title}>
-                    <a
+                    <Link
                       href={link.href}
                       onClick={() => setIsMenuOpen(false)}
                       className="text-3xl font-bold text-neutral-light hover:text-accent transition-colors duration-300"
                     >
                       {link.title}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
