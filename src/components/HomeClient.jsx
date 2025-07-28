@@ -1,0 +1,32 @@
+"use client";
+
+import React, { useState } from "react";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import Features from "../components/Features";
+import About from "../components/About";
+import Contact from "../components/Contact";
+import Proficiency from "../components/Proficiency";
+
+export default function HomeClient({ projects }) {
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+
+  const handleProjectModalToggle = (isOpen) => {
+    setIsProjectModalOpen(isOpen);
+  };
+
+  return (
+    <main>
+      <Header hideOnModal={isProjectModalOpen} />
+      <Hero className="min-h-screen snap-start flex flex-col justify-center pt-28" />
+      <About className="min-h-screen snap-start flex flex-col justify-center" />
+      <Features
+        projects={projects}
+        className="min-h-screen snap-start flex flex-col justify-center"
+        onModalToggle={handleProjectModalToggle}
+      />
+      <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
+      <Contact className="min-h-screen snap-start flex flex-col justify-center" />
+    </main>
+  );
+}

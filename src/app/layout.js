@@ -5,7 +5,7 @@ import {
   Playfair_Display,
 } from "next/font/google";
 import "./globals.css";
-import GridBackground from "@/blocks/Backgrounds/GridBackground";
+import GridBackground from "../blocks/Backgrounds/GridBackground.jsx";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

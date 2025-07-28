@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import SectionTitleAnimated from "@/components/SectionTitleAnimated";
+import SectionTitleAnimated from "../components/SectionTitleAnimated";
 import { motion, AnimatePresence } from "framer-motion";
 
 const timelineData = [

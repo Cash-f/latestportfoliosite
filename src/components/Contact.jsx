@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SectionTitleAnimated from "@/components/SectionTitleAnimated";
+import SectionTitleAnimated from "../components/SectionTitleAnimated";
 
 const Contact = ({ className }) => {
   return (
