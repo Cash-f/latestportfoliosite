@@ -3,11 +3,14 @@
 import React, { useMemo, useRef, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { BufferAttribute, Vector3, MathUtils, Mesh } from "three";
+import { BufferAttribute, MathUtils, Mesh, Color, CanvasTexture } from "three";
 
 function Particles({ count, shape }) {
   const points = useRef();
   const { viewport, mouse } = useThree();
+
+  const white = useMemo(() => new Color("white"), []);
+  const orange = useMemo(() => new Color("#f97316"), []);
 
   const particlePositions = useMemo(() => {
     let geometry;
@@ -45,11 +48,26 @@ function Particles({ count, shape }) {
     return temp;
   }, [count, particlePositions]);
 
+  const particleColors = useMemo(() => new Float32Array(count * 3), [count]);
+
+  const circleTexture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 128;
+    canvas.height = 128;
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.arc(64, 64, 50, 0, 2 * Math.PI);
+    context.fillStyle = "white";
+    context.fill();
+    return new CanvasTexture(canvas);
+  }, []);
+
   useFrame(() => {
     if (points.current) {
       const mouseX = (mouse.x * viewport.width) / 2;
       const mouseY = (mouse.y * viewport.height) / 2;
       const positions = points.current.geometry.attributes.position.array;
+      const colors = points.current.geometry.attributes.color.array;
 
       particles.forEach((particle, i) => {
         let dx = mouseX - positions[i * 3];
@@ -65,9 +83,15 @@ function Particles({ count, shape }) {
         positions[i * 3 + 1] +=
           (particle.y - positions[i * 3 + 1]) * 0.05 + particle.my;
 
+        const color = new Color();
+        const interactionStrength = Math.min(1, 1 / (dist * 2));
+        color.lerpColors(white, orange, interactionStrength);
+        colors[i * 3] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+
         const halfWidth = viewport.width / 2;
         const halfHeight = viewport.height / 2;
-
         positions[i * 3] = MathUtils.clamp(
           positions[i * 3],
           -halfWidth,
@@ -81,6 +105,7 @@ function Particles({ count, shape }) {
       });
 
       points.current.geometry.attributes.position.needsUpdate = true;
+      points.current.geometry.attributes.color.needsUpdate = true;
     }
   });
 
@@ -93,12 +118,22 @@ function Particles({ count, shape }) {
           array={particlePositions}
           itemSize={3}
         />
+        <bufferAttribute
+          attach="attributes-color"
+          count={particleColors.length / 3}
+          array={particleColors}
+          itemSize={3}
+        />
       </bufferGeometry>
+
       <pointsMaterial
-        size={0.035}
-        color="#f97316"
+        size={0.075}
         sizeAttenuation
         depthWrite={false}
+        vertexColors
+        transparent
+        alphaTest={0.5}
+        map={circleTexture}
       />
     </points>
   );
@@ -117,7 +152,7 @@ function Scene() {
       ref={groupRef}
       scale={2}
       position={[0.2, -0.5, 0]}
-      rotation={[1, Math.PI / 6, 0]}
+      rotation={[0.5, Math.PI / 6, 0]}
     >
       <Particles count={4000} shape={gamepad} />
     </group>

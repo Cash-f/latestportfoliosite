@@ -1,15 +1,11 @@
-// src/components/Hero.jsx
-
 import React from "react";
 import InteractiveParticles from "./InteractiveParticles";
 
 const Hero = ({ className }) => {
   return (
-    // Revert to items-center and add the -translate-y class
     <section
-      className={`flex flex-col md:flex-row items-center justify-center -translate-y-20 ${className}`}
+      className={`flex flex-col md:flex-row items-center justify-center -translate-y-10 ${className}`}
     >
-      {/* Left Column: Text Content */}
       <div className="container md:w-1/2 px-8 text-left py-16 md:py-0">
         <h1 className="text-5xl md:text-7xl font-playfair tracking-tighter text-foreground">
           Charlie Ash-Farmer
@@ -25,7 +21,6 @@ const Hero = ({ className }) => {
         </p>
       </div>
 
-      {/* Right Column: Particle System */}
       <div className="relative w-full h-[60vh] md:h-screen md:w-1/2">
         <InteractiveParticles />
       </div>

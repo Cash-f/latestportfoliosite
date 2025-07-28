@@ -1,14 +1,38 @@
-import { client } from "../sanity/lib/client";
-import HomeClient from "../components/HomeClient";
+// src/app/page.js
 
-async function getProjects() {
-  const query = `*[_type == "project"] | order(_createdAt asc)`;
-  const projects = await client.fetch(query);
-  return projects;
-}
+"use client";
 
-export default async function HomePage() {
-  const projects = await getProjects();
+import Header from "@/components/Header";
+import React, { useState } from "react";
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
+import Proficiency from "@/components/Proficiency";
 
-  return <HomeClient projects={projects} />;
+export default function HomePage() {
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+
+  const handleProjectModalToggle = (isOpen) => {
+    setIsProjectModalOpen(isOpen);
+  };
+
+  return (
+    <main>
+      <Header hideOnModal={isProjectModalOpen} />
+
+      <Hero className="min-h-screen snap-start flex flex-row items-center justify-center -translate-y-16" />
+
+      <About className="min-h-screen snap-start flex flex-col justify-center" />
+
+      <Features
+        className="min-h-screen snap-start flex flex-col justify-center"
+        onModalToggle={handleProjectModalToggle}
+      />
+
+      <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
+
+      <Contact className="min-h-screen snap-start flex flex-col justify-center" />
+    </main>
+  );
 }
