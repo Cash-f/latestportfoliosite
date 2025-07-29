@@ -21,7 +21,7 @@ export default function HomePage() {
     <main>
       <Header hideOnModal={isProjectModalOpen} />
 
-      <Hero className="min-h-screen snap-start flex flex-row items-center justify-center -translate-y-16" />
+      <Hero className="min-h-screen snap-start flex flex-col md:flex-row items-center justify-center -translate-y-2" />
 
       <About className="min-h-screen snap-start flex flex-col justify-center" />
 

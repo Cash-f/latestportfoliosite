@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${playfair.variable} scroll-smooth`}
     >
-      <body className="antialiased font-montserrat bg-background text-foreground">
+      <body className="antialiased font-montserrat bg-background text-foreground overflow-x-hidden">
         <GridBackground
           size={50}
           color="rgba(255, 255, 255, 0.05)"
@@ -45,7 +45,6 @@ export default function RootLayout({ children }) {
           fade={true}
           className="fixed inset-0 z-0"
         />
-
         <div className="relative h-screen w-full overflow-y-scroll snap-y snap-mandatory">
           {children}
         </div>
