@@ -6,7 +6,7 @@ const Hero = ({ className }) => {
     <section
       className={`flex flex-col md:flex-row items-center justify-center md:-translate-y-10 ${className}`}
     >
-      <div className="md:w-1/2 px-8 text-center md:text-left pt-24  md:py-0">
+      <div className="md:w-1/2 px-8 text-center md:text-left pt-24 md:py-0">
         <h1 className="text-5xl md:text-7xl font-playfair tracking-tighter text-foreground">
           Charlie Ash-Farmer
           <br />
@@ -21,7 +21,7 @@ const Hero = ({ className }) => {
         </p>
       </div>
 
-      <div className="relative w-full h-[50vh] md:h-screen md:w-12 -mt-16 md:mt-0">
+      <div className="relative w-full h-[50vh] md:h-screen md:w-1/2 -mt-16 md:mt-0">
         <InteractiveParticles />
       </div>
     </section>
