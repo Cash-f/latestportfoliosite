@@ -48,6 +48,8 @@ export default function RootLayout({ children }) {
         <div className="relative h-screen w-full overflow-y-scroll snap-y snap-mandatory">
           {children}
         </div>
+
+        <div id="modal-root" />
       </body>
     </html>
   );

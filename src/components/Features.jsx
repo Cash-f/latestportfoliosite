@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link"; // --- NEW: Import Link for navigation
 import { motion } from "framer-motion";
 import SectionTitleAnimated from "../components/SectionTitleAnimated";
 import ProjectModal from "./ProjectModal";
@@ -57,6 +58,18 @@ const Features = ({ className, onModalToggle }) => {
           >
             View More Projects
           </a>
+        </div>
+
+        <div className="mt-16 text-center">
+          <p className="mb-4 text-lg text-neutral-light">
+            Or, try an interactive experiment:
+          </p>
+          <Link
+            href="/game"
+            className="inline-block bg-accent hover:bg-accent-hover text-foreground font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
+          >
+            Play Bug Squasher
+          </Link>
         </div>
       </div>
 

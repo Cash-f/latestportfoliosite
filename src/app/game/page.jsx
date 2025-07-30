@@ -20,10 +20,11 @@ function SceneSetup() {
 
 export default function GamePage() {
   const { movePlayer, shoot } = useStore.getState();
+  const isCodeModalOpen = useStore((state) => state.isCodeModalOpen);
 
   return (
     <div className="relative w-screen h-screen bg-neutral-darkest select-none">
-      <div className="absolute inset-0 z-20">
+      <div className={`absolute inset-0 ${isCodeModalOpen ? "z-50" : "z-20"}`}>
         <UI />
       </div>
 

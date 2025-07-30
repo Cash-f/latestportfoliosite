@@ -1,7 +1,14 @@
 import { create } from "zustand";
 import { Vector3 } from "three";
 
+const BASE_BUG_SPEED = 1.5;
+const SPEED_INCREASE_FACTOR = 0.4;
+const BASE_SPAWN_INTERVAL = 1.2;
+const MAX_SPAWN_RATE_SCORE = 1000;
+const MIN_SPAWN_INTERVAL = 0.3;
+
 export const useStore = create((set, get) => ({
+  // --- Game State ---
   player: { position: [0, -4, 0], direction: 0 },
   bullets: [],
   bugs: [],
@@ -10,6 +17,10 @@ export const useStore = create((set, get) => ({
   bugSpawnTimer: 0,
   viewport: null,
 
+  // --- NEW: Add state for the modal ---
+  isCodeModalOpen: false,
+
+  // --- Game Actions ---
   movePlayer: (direction) => {
     set((state) => ({ player: { ...state.player, direction } }));
   },
@@ -32,14 +43,21 @@ export const useStore = create((set, get) => ({
       player,
       increaseScore,
       setGameOver,
+      score,
     } = get();
     if (gameOver || !viewport) return;
-
-    // --- Bug Spawning ---
     let { bugSpawnTimer } = get();
     bugSpawnTimer += delta;
-    if (bugSpawnTimer > 1.2) {
+    const scoreProgress =
+      Math.min(score, MAX_SPAWN_RATE_SCORE) / MAX_SPAWN_RATE_SCORE;
+    const spawnInterval =
+      BASE_SPAWN_INTERVAL -
+      (BASE_SPAWN_INTERVAL - MIN_SPAWN_INTERVAL) * scoreProgress;
+    if (bugSpawnTimer > spawnInterval) {
       bugSpawnTimer = 0;
+      const scoreBonusSpeed = Math.floor(score / 100) * SPEED_INCREASE_FACTOR;
+      const newBugSpeed =
+        BASE_BUG_SPEED + scoreBonusSpeed + Math.random() * 0.5;
       const halfWidth = viewport.width / 2;
       const bugType = ["NaN", "{}", "</>"][Math.floor(Math.random() * 3)];
       set((state) => ({
@@ -53,13 +71,11 @@ export const useStore = create((set, get) => ({
               viewport.height / 2 + 1,
               0,
             ],
-            speed: Math.random() * 2 + 1,
+            speed: newBugSpeed,
           },
         ],
       }));
     }
-
-    // --- Update Bug n Bullet Positions ---
     let updatedBugs = get()
       .bugs.map((bug) => ({
         ...bug,
@@ -70,7 +86,6 @@ export const useStore = create((set, get) => ({
         ],
       }))
       .filter((bug) => bug.position[1] > -viewport.height / 2 - 2);
-
     let updatedBullets = bullets
       .map((bullet) => ({
         ...bullet,
@@ -81,8 +96,6 @@ export const useStore = create((set, get) => ({
         ],
       }))
       .filter((bullet) => bullet.position[1] < viewport.height / 2 + 1);
-
-    // --- Collision Detection ---
     const playerPos = new Vector3(...player.position);
     for (const bullet of updatedBullets) {
       const bulletPos = new Vector3(...bullet.position);
@@ -95,15 +108,12 @@ export const useStore = create((set, get) => ({
         }
       }
     }
-
     for (const bug of updatedBugs) {
       const bugPos = new Vector3(...bug.position);
       if (bugPos.distanceTo(playerPos) < 1) {
         setGameOver();
       }
     }
-
-    // --- Final State Update ---
     set({ bugSpawnTimer, bugs: updatedBugs, bullets: updatedBullets });
   },
   increaseScore: (amount) => {
@@ -120,6 +130,11 @@ export const useStore = create((set, get) => ({
       score: 0,
       gameOver: false,
       bugSpawnTimer: 0,
+      isCodeModalOpen: false, // --- Ensure modal closes on reset
     });
   },
+
+  // --- NEW: Add actions for the modal ---
+  openCodeModal: () => set({ isCodeModalOpen: true }),
+  closeCodeModal: () => set({ isCodeModalOpen: false }),
 }));

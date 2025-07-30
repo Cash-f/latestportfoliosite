@@ -18,14 +18,16 @@ const CodeBlock = ({ snippets }) => {
 
           <div className="text-sm">
             <SyntaxHighlighter
-              language="jsx"
+              language={snippet.language || "jsx"}
               style={vscDarkPlus}
               customStyle={{
                 borderRadius: "0.5rem",
                 padding: "1rem",
                 margin: 0,
+
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
               }}
-              wrapLongLines={true}
             >
               {snippet.code.trim()}
             </SyntaxHighlighter>
