@@ -1,5 +1,3 @@
-// src/app/page.js
-
 "use client";
 
 import Header from "@/components/Header";
@@ -26,7 +24,7 @@ export default function HomePage() {
       <About className="min-h-screen snap-start flex flex-col justify-center" />
 
       <Features
-        className="min-h-screen snap-start flex flex-col justify-center"
+        className="min-h-screen snap-start scroll-mb-24 flex flex-col justify-center"
         onModalToggle={handleProjectModalToggle}
       />
 
