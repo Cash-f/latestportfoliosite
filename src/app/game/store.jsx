@@ -8,7 +8,6 @@ const MAX_SPAWN_RATE_SCORE = 1000;
 const MIN_SPAWN_INTERVAL = 0.3;
 
 export const useStore = create((set, get) => ({
-  // --- Game State ---
   player: { position: [0, -4, 0], direction: 0 },
   bullets: [],
   bugs: [],
@@ -16,14 +15,16 @@ export const useStore = create((set, get) => ({
   gameOver: false,
   bugSpawnTimer: 0,
   viewport: null,
-
-  // --- NEW: Add state for the modal ---
   isCodeModalOpen: false,
+  mobileControlsInteracted: false,
 
-  // --- Game Actions ---
   movePlayer: (direction) => {
+    if (!get().mobileControlsInteracted && direction !== 0) {
+      set({ mobileControlsInteracted: true });
+    }
     set((state) => ({ player: { ...state.player, direction } }));
   },
+
   shoot: () => {
     if (get().gameOver) return;
     const playerPos = get().player.position;
@@ -34,6 +35,11 @@ export const useStore = create((set, get) => ({
       ],
     }));
   },
+
+  setPlayerPosition: (position) => {
+    set((state) => ({ player: { ...state.player, position } }));
+  },
+
   update: (delta) => {
     const {
       gameOver,
@@ -46,6 +52,7 @@ export const useStore = create((set, get) => ({
       score,
     } = get();
     if (gameOver || !viewport) return;
+
     let { bugSpawnTimer } = get();
     bugSpawnTimer += delta;
     const scoreProgress =
@@ -76,6 +83,7 @@ export const useStore = create((set, get) => ({
         ],
       }));
     }
+
     let updatedBugs = get()
       .bugs.map((bug) => ({
         ...bug,
@@ -86,6 +94,7 @@ export const useStore = create((set, get) => ({
         ],
       }))
       .filter((bug) => bug.position[1] > -viewport.height / 2 - 2);
+
     let updatedBullets = bullets
       .map((bullet) => ({
         ...bullet,
@@ -96,6 +105,7 @@ export const useStore = create((set, get) => ({
         ],
       }))
       .filter((bullet) => bullet.position[1] < viewport.height / 2 + 1);
+
     const playerPos = new Vector3(...player.position);
     for (const bullet of updatedBullets) {
       const bulletPos = new Vector3(...bullet.position);
@@ -108,20 +118,25 @@ export const useStore = create((set, get) => ({
         }
       }
     }
+
     for (const bug of updatedBugs) {
       const bugPos = new Vector3(...bug.position);
       if (bugPos.distanceTo(playerPos) < 1) {
         setGameOver();
       }
     }
+
     set({ bugSpawnTimer, bugs: updatedBugs, bullets: updatedBullets });
   },
+
   increaseScore: (amount) => {
     set((state) => ({ score: state.score + amount }));
   },
+
   setGameOver: () => {
     set({ gameOver: true });
   },
+
   resetGame: () => {
     set({
       player: { position: [0, -4, 0], direction: 0 },
@@ -130,11 +145,11 @@ export const useStore = create((set, get) => ({
       score: 0,
       gameOver: false,
       bugSpawnTimer: 0,
-      isCodeModalOpen: false, // --- Ensure modal closes on reset
+      isCodeModalOpen: false,
+      mobileControlsInteracted: false,
     });
   },
 
-  // --- NEW: Add actions for the modal ---
   openCodeModal: () => set({ isCodeModalOpen: true }),
   closeCodeModal: () => set({ isCodeModalOpen: false }),
 }));

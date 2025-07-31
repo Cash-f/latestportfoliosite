@@ -19,8 +19,11 @@ function SceneSetup() {
 }
 
 export default function GamePage() {
-  const { movePlayer, shoot } = useStore.getState();
   const isCodeModalOpen = useStore((state) => state.isCodeModalOpen);
+  const mobileControlsInteracted = useStore(
+    (state) => state.mobileControlsInteracted
+  );
+  const { movePlayer, shoot } = useStore();
 
   return (
     <div className="relative w-screen h-screen bg-neutral-darkest select-none">
@@ -42,24 +45,28 @@ export default function GamePage() {
         </Canvas>
       </div>
 
-      <div className="md:hidden absolute bottom-0 left-0 w-full h-1/4 grid grid-cols-3 gap-4 p-4 z-30">
+      <div
+        className={`md:hidden absolute bottom-0 left-0 w-full h-1/4 grid grid-cols-3 gap-4 p-4 z-30 transition-opacity duration-700 ${
+          mobileControlsInteracted ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <div
           className="bg-white bg-opacity-20 rounded-lg flex items-center justify-center text-white text-3xl"
-          onTouchStart={() => movePlayer(-1)}
-          onTouchEnd={() => movePlayer(0)}
+          onPointerDown={() => movePlayer(-1)}
+          onPointerUp={() => movePlayer(0)}
         >
           &larr;
         </div>
         <div
           className="bg-accent bg-opacity-50 rounded-lg flex items-center justify-center text-white text-3xl"
-          onTouchStart={() => shoot()}
+          onPointerDown={() => shoot()}
         >
           SHOOT
         </div>
         <div
           className="bg-white bg-opacity-20 rounded-lg flex items-center justify-center text-white text-3xl"
-          onTouchStart={() => movePlayer(1)}
-          onTouchEnd={() => movePlayer(0)}
+          onPointerDown={() => movePlayer(1)}
+          onPointerUp={() => movePlayer(0)}
         >
           &rarr;
         </div>

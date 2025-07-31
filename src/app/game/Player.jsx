@@ -1,11 +1,14 @@
+"use client";
+
 import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useStore } from "./store";
 import { KeyboardControls, useKeyboardControls } from "@react-three/drei";
 
 function Controller() {
-  const { movePlayer, shoot } = useStore.getState();
-  const [sub, get] = useKeyboardControls();
+  const { movePlayer, shoot } = useStore();
+
+  const [sub] = useKeyboardControls();
 
   useEffect(() => {
     return sub(
@@ -16,13 +19,17 @@ function Controller() {
     );
   }, [sub, shoot]);
 
-  useFrame((state, delta) => {
-    const controls = get();
-    let direction = 0;
-    if (controls.left) direction = -1;
-    if (controls.right) direction = 1;
-    movePlayer(direction);
-  });
+  useEffect(() => {
+    return sub(
+      (state) => ({ left: state.left, right: state.right }),
+      ({ left, right }) => {
+        let direction = 0;
+        if (left) direction = -1;
+        if (right) direction = 1;
+        movePlayer(direction);
+      }
+    );
+  }, [sub, movePlayer]);
 
   return null;
 }
@@ -33,17 +40,19 @@ export function Player() {
   const viewport = useStore((state) => state.viewport);
 
   useFrame((state, delta) => {
-    if (!viewport) return;
+    if (!playerRef.current || !viewport) return;
+
     const { direction, position } = useStore.getState().player;
-    position[0] += direction * 10 * delta;
+    const { setPlayerPosition } = useStore.getState();
+
+    let newX = position[0] + direction * 10 * delta;
 
     const halfWidth = viewport.width / 2;
-    position[0] = Math.max(
-      -halfWidth + 0.5,
-      Math.min(halfWidth - 0.5, position[0])
-    );
+    newX = Math.max(-halfWidth + 0.5, Math.min(halfWidth - 0.5, newX));
 
-    playerRef.current.position.set(...position);
+    playerRef.current.position.x = newX;
+
+    setPlayerPosition([newX, position[1], position[2]]);
   });
 
   return (
