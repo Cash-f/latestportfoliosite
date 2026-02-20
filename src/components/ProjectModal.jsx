@@ -24,7 +24,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
         onClose();
       }
     },
-    [isOpen, onClose]
+    [isOpen, onClose],
   );
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             animate={{ y: "0", opacity: 1 }}
             exit={{ y: "100vh", opacity: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8"
+            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-medium [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-accent"
           >
             <button
               onClick={onClose}

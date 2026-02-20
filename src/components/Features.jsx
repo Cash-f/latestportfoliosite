@@ -1,85 +1,72 @@
+// src/components/Features.jsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link"; // --- NEW: Import Link for navigation
-import { motion } from "framer-motion";
-import SectionTitleAnimated from "../components/SectionTitleAnimated";
-import ProjectModal from "./ProjectModal";
+import React, { useState } from "react";
+import Link from "next/link";
 import ProjectCard from "./ProjectCard";
-import { allProjects } from "../data/projectsData";
+import ProjectModal from "./ProjectModal";
+import SectionTitleAnimated from "./SectionTitleAnimated"; // Assuming you have this from your other page!
 
-const Features = ({ className, onModalToggle }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function Features({
+  className,
+  onModalToggle,
+  allProjects = [],
+}) {
   const [selectedProject, setSelectedProject] = useState(null);
 
+  const handleOpenModal = (project) => {
+    setSelectedProject(project);
+    if (onModalToggle) onModalToggle(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+    if (onModalToggle) onModalToggle(false);
+  };
+
+  // Grab only the first 3 projects to feature on the homepage
   const featuredProjects = allProjects.slice(0, 3);
 
-  useEffect(() => {
-    if (onModalToggle) {
-      onModalToggle(isModalOpen);
-    }
-  }, [isModalOpen, onModalToggle]);
-
-  const openModal = (project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-  };
-
   return (
-    <section id="projects" className={`py-20 ${className}`}>
+    <section className={className}>
+      {/* 1. The Container keeps it centered and off the left edge */}
       <div className="container mx-auto px-8">
+        {/* 2. Your Titles */}
         <SectionTitleAnimated colorClass="text-accent">
-          Recent Projects
+          Featured Work
         </SectionTitleAnimated>
+        <p className="text-center text-neutral-light max-w-2xl mx-auto -mt-8 mb-12">
+          A selection of my latest 3D art and development projects.
+        </p>
 
+        {/* 3. The Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredProjects.map((project, index) => (
-            <motion.div
+          {featuredProjects.map((project) => (
+            <ProjectCard
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <ProjectCard project={project} onClick={openModal} />
-            </motion.div>
+              project={project}
+              onClick={() => handleOpenModal(project)}
+            />
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href="/all-projects"
-            className="inline-block bg-accent hover:bg-accent-hover text-foreground font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
-          >
-            View More Projects
-          </a>
-        </div>
-
-        <div className="mt-16 text-center">
-          <p className="mb-4 text-lg text-neutral-light">
-            Or, try an interactive experiment:
-          </p>
+        {/* 4. The Link to the Archive Page */}
+        <div className="flex justify-center mt-16">
           <Link
-            href="/game"
-            className="inline-block bg-accent hover:bg-accent-hover text-foreground font-bold font-montserrat py-3 px-8 rounded-md transition-colors duration-300"
+            href="/all-projects"
+            className="bg-accent hover:bg-accent-hover text-foreground font-bold py-3 px-8 rounded-md transition-colors duration-300 shadow-lg"
           >
-            Play Bug Squasher
+            View Full Project Archive
           </Link>
         </div>
       </div>
 
+      {/* The Modal */}
       <ProjectModal
         project={selectedProject}
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        isOpen={!!selectedProject}
+        onClose={handleCloseModal}
       />
     </section>
   );
-};
-
-export default Features;
+}

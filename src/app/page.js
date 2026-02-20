@@ -1,36 +1,10 @@
-"use client";
+export const revalidate = 60;
 
-import Header from "@/components/Header";
-import React, { useState } from "react";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Proficiency from "@/components/Proficiency";
+import { fetchProjects } from "@/lib/contentful";
+import HomeClientWrapper from "@/components/HomeClientWrapper";
 
-export default function HomePage() {
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+export default async function HomePage() {
+  const projects = await fetchProjects();
 
-  const handleProjectModalToggle = (isOpen) => {
-    setIsProjectModalOpen(isOpen);
-  };
-
-  return (
-    <main>
-      <Header hideOnModal={isProjectModalOpen} />
-
-      <Hero className="min-h-screen snap-start flex flex-col md:flex-row items-center justify-center -translate-y-2" />
-
-      <About className="min-h-screen snap-start flex flex-col justify-center" />
-
-      <Features
-        className="min-h-screen snap-start scroll-mb-24 flex flex-col justify-center"
-        onModalToggle={handleProjectModalToggle}
-      />
-
-      <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
-
-      <Contact className="min-h-screen snap-start flex flex-col justify-center" />
-    </main>
-  );
+  return <HomeClientWrapper allProjects={projects} />;
 }
