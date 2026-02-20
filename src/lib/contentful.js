@@ -10,10 +10,7 @@ const client = createClient({
 
 export const fetchProjects = async () => {
   try {
-    // Try lowercase "project" here just in case
     const response = await client.getEntries({ content_type: "project" });
-
-    // Check your VS Code Terminal (not browser console)
     console.log("RAW ITEMS FROM CONTENTFUL:", response.items);
 
     if (!response.items || response.items.length === 0) {
@@ -29,12 +26,17 @@ export const fetchProjects = async () => {
       role: item.fields.role,
       category: item.fields.category,
       tech: item.fields.tech,
-      // Use optional chaining (?.) to prevent crashing if an image is missing
       imageUrl: item.fields.image?.fields?.file?.url
         ? `https:${item.fields.image.fields.file.url}`
         : "/placeholder.png",
       longDescription: item.fields.longDescription,
-      features: item.fields.features,
+      features: item.fields.features
+        ? typeof item.fields.features === "string"
+          ? item.fields.features
+              .split("\n")
+              .filter((line) => line.trim() !== "")
+          : item.fields.features
+        : [],
       challenges: item.fields.challenges,
     }));
   } catch (error) {
