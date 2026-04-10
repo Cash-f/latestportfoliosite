@@ -37,7 +37,7 @@ const Header = ({ hideOnModal }) => {
   };
 
   const navLinks = [
-    { href: "/#projects", title: "Projects" },
+    { href: "/all-projects", title: "Projects" },
     { href: "/#about", title: "About" },
     { href: "/#contact", title: "Contact" },
   ];

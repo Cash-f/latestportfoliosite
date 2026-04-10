@@ -51,7 +51,7 @@ export default function Features({
         </div>
 
         {/* 4. The Link to the Archive Page */}
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center pb-24 md:pb-32 mt-16">
           <Link
             href="/all-projects"
             className="bg-accent hover:bg-accent-hover text-foreground font-bold py-3 px-8 rounded-md transition-colors duration-300 shadow-lg"
