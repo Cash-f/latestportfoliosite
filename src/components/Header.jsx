@@ -82,24 +82,34 @@ const Header = ({ hideOnModal }) => {
           </a>
         </div>
 
-        <div className="md:hidden">
+        {/* --- FIXED HAMBURGER BUTTON --- */}
+        <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="w-8 h-8 flex flex-col justify-around items-center z-[101] relative"
+            // A fixed height of 6 (24px) gives the lines perfect breathing room
+            className="relative w-8 h-6 z-[101] focus:outline-none"
+            aria-label="Toggle menu"
           >
+            {/* Top Line */}
             <span
-              className={`block w-full h-0.5 bg-foreground transition-transform duration-300 ease-in-out ${
-                isMenuOpen ? "rotate-45 translate-y-[5px]" : ""
+              className={`absolute left-0 w-full h-0.5 bg-foreground transition-all duration-300 ease-in-out origin-center ${
+                isMenuOpen ? "top-1/2 -translate-y-1/2 rotate-45" : "top-0"
               }`}
             ></span>
+
+            {/* Middle Line */}
             <span
-              className={`block w-full h-0.5 bg-foreground transition-opacity duration-300 ease-in-out ${
-                isMenuOpen ? "opacity-0" : ""
+              className={`absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-foreground transition-all duration-300 ease-in-out origin-center ${
+                isMenuOpen ? "opacity-0 scale-x-0" : "opacity-100"
               }`}
             ></span>
+
+            {/* Bottom Line */}
             <span
-              className={`block w-full h-0.5 bg-foreground transition-transform duration-300 ease-in-out ${
-                isMenuOpen ? "-rotate-45 -translate-y-[5px]" : ""
+              className={`absolute left-0 w-full h-0.5 bg-foreground transition-all duration-300 ease-in-out origin-center ${
+                isMenuOpen
+                  ? "bottom-1/2 translate-y-1/2 -rotate-45"
+                  : "bottom-0"
               }`}
             ></span>
           </button>
@@ -113,6 +123,7 @@ const Header = ({ hideOnModal }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
+            // Kept your original z-[100]
             className="fixed inset-0 bg-neutral-darkest z-[100] flex items-center justify-center"
           >
             <nav>

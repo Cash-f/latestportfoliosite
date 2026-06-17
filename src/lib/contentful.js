@@ -12,6 +12,11 @@ export const fetchProjects = async () => {
     return response.items.map((item) => {
       const f = item.fields; // Shortcut to save typing
 
+      console.log(`Checking ${f.title}:`, {
+        rawImage2Subtitle: f.image2Subtitle,
+        rawImage3Subtitle: f.image3Subtitle,
+      });
+
       return {
         id: item.sys.id,
         title: f.title,

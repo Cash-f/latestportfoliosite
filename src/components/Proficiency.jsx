@@ -15,7 +15,7 @@ const softwareTools = [
     name: "Unity 3D",
     icon: "/Logos/unity.png",
     description: "C# scripting for gameplay, VR/AR development, and mobile.",
-    proficiency: 75,
+    proficiency: 45,
   },
   {
     name: "Blender",
@@ -33,19 +33,19 @@ const softwareTools = [
     name: "Substance Designer",
     icon: "/Logos/substance-designer.png",
     description: "Material synthesis for 3D assets.",
-    proficiency: 50,
+    proficiency: 80,
   },
   {
     name: "Maya",
     icon: "/Logos/maya.png",
     description: "3D animation, modeling, simulation, and rendering.",
-    proficiency: 70,
+    proficiency: 40,
   },
   {
     name: "Photoshop",
     icon: "/Logos/photoshop1.png",
     description: "Image manipulation, concept art, and UI design.",
-    proficiency: 80,
+    proficiency: 50,
   },
   {
     name: "Git / GitHub",
