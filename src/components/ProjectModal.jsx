@@ -132,9 +132,11 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                           height={450}
                           className="rounded-md border border-neutral-medium object-cover w-full h-48"
                         />
-                        <p className="text-xs text-neutral-lighter italic">
-                          Material Channel Maps
-                        </p>
+                        {project.image2Subtitle && (
+                          <p className="text-xs text-neutral-lighter italic">
+                            {project.image2Subtitle}
+                          </p>
+                        )}
                       </div>
                     )}
                     {project.image3Url && (
@@ -146,9 +148,11 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                           height={450}
                           className="rounded-md border border-neutral-medium object-cover w-full h-48"
                         />
-                        <p className="text-xs text-neutral-lighter italic">
-                          Node Graph / Implementation
-                        </p>
+                        {project.image3Subtitle && (
+                          <p className="text-xs text-neutral-lighter italic">
+                            {project.image3Subtitle}
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>

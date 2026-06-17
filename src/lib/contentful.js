@@ -24,14 +24,18 @@ export const fetchProjects = async () => {
           ? `https:${f.image.fields.file.url}`
           : "/placeholder.png",
 
-        // NEW: Secondary Images (Matching your schema exactly)
+        // Secondary Images (Matching your schema exactly)
         image2Url: f.image2?.fields?.file?.url
           ? `https:${f.image2.fields.file.url}`
           : null,
+        // NEW: Pulling the subtitle for Image 2
+        image2Subtitle: f.image2Subtitle || null,
 
         image3Url: f.image3?.fields?.file?.url
           ? `https:${f.image3.fields.file.url}`
           : null,
+        // NEW: Pulling the subtitle for Image 3
+        image3Subtitle: f.image3Subtitle || null,
 
         longDescription: f.longDescription,
 
