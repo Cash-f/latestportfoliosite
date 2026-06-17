@@ -1,8 +1,5 @@
 import { createClient } from "contentful";
 
-console.log("Space ID is:", process.env.CONTENTFUL_SPACE_ID);
-console.log("Token is:", process.env.CONTENTFUL_ACCESS_TOKEN);
-
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
@@ -11,34 +8,46 @@ const client = createClient({
 export const fetchProjects = async () => {
   try {
     const response = await client.getEntries({ content_type: "project" });
-    console.log("RAW ITEMS FROM CONTENTFUL:", response.items);
 
-    if (!response.items || response.items.length === 0) {
-      console.warn(
-        "No items found! Check if content_type matches the API ID exactly.",
-      );
-      return [];
-    }
+    return response.items.map((item) => {
+      const f = item.fields; // Shortcut to save typing
 
-    return response.items.map((item) => ({
-      id: item.sys.id,
-      title: item.fields.title,
-      role: item.fields.role,
-      category: item.fields.category,
-      tech: item.fields.tech,
-      imageUrl: item.fields.image?.fields?.file?.url
-        ? `https:${item.fields.image.fields.file.url}`
-        : "/placeholder.png",
-      longDescription: item.fields.longDescription,
-      features: item.fields.features
-        ? typeof item.fields.features === "string"
-          ? item.fields.features
-              .split("\n")
-              .filter((line) => line.trim() !== "")
-          : item.fields.features
-        : [],
-      challenges: item.fields.challenges,
-    }));
+      return {
+        id: item.sys.id,
+        title: f.title,
+        role: f.role,
+        category: f.category,
+        tech: f.tech || [],
+
+        // Main Thumbnail
+        imageUrl: f.image?.fields?.file?.url
+          ? `https:${f.image.fields.file.url}`
+          : "/placeholder.png",
+
+        // NEW: Secondary Images (Matching your schema exactly)
+        image2Url: f.image2?.fields?.file?.url
+          ? `https:${f.image2.fields.file.url}`
+          : null,
+
+        image3Url: f.image3?.fields?.file?.url
+          ? `https:${f.image3.fields.file.url}`
+          : null,
+
+        longDescription: f.longDescription,
+
+        // Improved Features logic: handles both arrays and strings safely
+        features: f.features
+          ? Array.isArray(f.features)
+            ? f.features
+            : f.features.split("\n").filter((line) => line.trim() !== "")
+          : [],
+
+        challenges: f.challenges,
+
+        // Ensure Links JSON is passed through correctly
+        links: f.links || null,
+      };
+    });
   } catch (error) {
     console.error("Contentful Error:", error);
     return [];

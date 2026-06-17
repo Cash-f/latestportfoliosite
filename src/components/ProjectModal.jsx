@@ -45,6 +45,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.7 }}
@@ -53,6 +54,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             className="absolute inset-0 bg-neutral-darkest backdrop-blur-sm"
           ></motion.div>
 
+          {/* Modal Container */}
           <motion.div
             initial={{ y: "100vh", opacity: 0 }}
             animate={{ y: "0", opacity: 1 }}
@@ -68,23 +70,28 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               ×
             </button>
 
+            {/* --- PRIMARY IMAGE --- */}
             {project.imageUrl && (
-              <Image
-                src={project.imageUrl}
-                alt={project.title}
-                width={800}
-                height={450}
-                className="w-full h-auto max-h-80 object-cover rounded-md mb-6"
-              />
+              <div className="mb-6 overflow-hidden rounded-md">
+                <Image
+                  src={project.imageUrl}
+                  alt={project.title}
+                  width={800}
+                  height={450}
+                  className="w-full h-auto max-h-80 object-cover"
+                />
+              </div>
             )}
 
-            <h2 className="text-4xl md:text-5xl font-bold text-accent mb-4 font-playfair">
+            <h2 className="text-4xl md:text-5xl font-bold text-accent mb-2 font-playfair">
               {project.title}
             </h2>
 
             <p className="text-accent-hover font-semibold mb-4 text-lg">
               {project.role}
             </p>
+
+            {/* Tech Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
               {project.tech &&
                 project.tech.map((item) => (
@@ -97,56 +104,93 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                 ))}
             </div>
 
+            {/* --- CONTENT SECTIONS --- */}
             <div className="text-neutral-light leading-relaxed font-montserrat space-y-6">
-              <p>
-                {project.longDescription ||
-                  "No detailed description available."}
-              </p>
+              <section>
+                <h3 className="text-xl font-bold text-foreground mb-2">
+                  About the Project:
+                </h3>
+                <p>
+                  {project.longDescription ||
+                    "No detailed description available."}
+                </p>
+              </section>
 
+              {/* --- TECHNICAL BREAKDOWN GALLERY (IMAGE 2 & 3) --- */}
+              {(project.image2Url || project.image3Url) && (
+                <section className="space-y-4 pt-4 border-t border-neutral-medium">
+                  <h3 className="text-xl font-bold text-foreground">
+                    Technical Breakdown:
+                  </h3>
+                  <div className="flex flex-col gap-6">
+                    {project.image2Url && (
+                      <div className="space-y-2">
+                        <Image
+                          src={project.image2Url}
+                          alt="Technical map breakdown"
+                          width={800}
+                          height={450}
+                          className="rounded-md border border-neutral-medium object-cover w-full h-48"
+                        />
+                        <p className="text-xs text-neutral-lighter italic">
+                          Material Channel Maps
+                        </p>
+                      </div>
+                    )}
+                    {project.image3Url && (
+                      <div className="space-y-2">
+                        <Image
+                          src={project.image3Url}
+                          alt="Graph or detail view"
+                          width={800}
+                          height={450}
+                          className="rounded-md border border-neutral-medium object-cover w-full h-48"
+                        />
+                        <p className="text-xs text-neutral-lighter italic">
+                          Node Graph / Implementation
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {/* Features List */}
               {project.features && (
-                <div>
+                <section>
                   <h3 className="text-xl font-bold text-foreground mb-2">
                     Key Features:
                   </h3>
-                  <ul className="list-disc list-inside space-y-1">
-                    {project.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
+                  {Array.isArray(project.features) ? (
+                    <ul className="list-disc list-inside space-y-1">
+                      {project.features.map((feature, index) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="whitespace-pre-line">{project.features}</p>
+                  )}
+                </section>
               )}
 
+              {/* Challenges */}
               {project.challenges && (
-                <div>
+                <section>
                   <h3 className="text-xl font-bold text-foreground mb-2">
                     Challenges & Solutions:
                   </h3>
                   <p>{project.challenges}</p>
-                </div>
+                </section>
               )}
             </div>
 
+            {/* Optional Extras (Models, Code, etc) */}
             {project.modelUrl && (
               <div className="mt-8">
                 <h3 className="text-xl font-bold text-foreground mb-4">
                   Interactive 3D Model
                 </h3>
                 <ModelViewer modelUrl={project.modelUrl} />
-              </div>
-            )}
-
-            {project.topologyImageUrl && (
-              <div className="mt-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Topology & Wireframe
-                </h3>
-                <Image
-                  src={project.topologyImageUrl}
-                  alt={`${project.title} topology wireframe`}
-                  width={1920}
-                  height={1080}
-                  className="w-full h-auto object-cover rounded-lg"
-                />
               </div>
             )}
 
@@ -159,6 +203,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               </div>
             )}
 
+            {/* Links Section */}
             {project.links && project.links.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-4">
                 {project.links.map((link, index) => (
@@ -169,7 +214,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                     rel="noopener noreferrer"
                     className="bg-accent hover:bg-accent-hover text-foreground font-bold py-2 px-6 rounded-md transition-colors duration-300"
                   >
-                    {link.text}
+                    {link.text || "View Project"}
                   </a>
                 ))}
               </div>

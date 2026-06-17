@@ -1,25 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import SectionTitleAnimated from "@/components/SectionTitleAnimated";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectModal from "@/components/ProjectModal";
 
-const categories = ["All", "Unreal Engine", "3D Art", "Web Dev"];
-
 export default function AllProjectsClient({ allProjects = [] }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState(null);
+
+  // --- DYNAMIC CATEGORY LOGIC ---
+  // Memoizing this ensures it only recalculates if the project list changes
+  const dynamicCategories = useMemo(() => {
+    const uniqueCategories = [
+      ...new Set(allProjects.map((p) => p.category).filter(Boolean)),
+    ];
+    return ["All", ...uniqueCategories.sort()];
+  }, [allProjects]);
 
   const filteredProjects =
     activeCategory === "All"
       ? allProjects
       : allProjects.filter((p) => p.category === activeCategory);
-
-  console.log("Projects found:", allProjects.length);
-  console.log("First project title:", allProjects[0]?.title);
 
   return (
     <>
@@ -35,8 +39,9 @@ export default function AllProjectsClient({ allProjects = [] }) {
             through different types of projects.
           </p>
 
+          {/* Dynamic Filter Buttons */}
           <div className="flex justify-center flex-wrap gap-4 mb-12">
-            {categories.map((category) => (
+            {dynamicCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
@@ -55,7 +60,7 @@ export default function AllProjectsClient({ allProjects = [] }) {
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {filteredProjects.map((project) => (
                 <motion.div
                   key={project.id}
@@ -64,7 +69,6 @@ export default function AllProjectsClient({ allProjects = [] }) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.3 }}
-                  onClick={() => setSelectedProject(project)}
                 >
                   <ProjectCard
                     project={project}
@@ -74,6 +78,13 @@ export default function AllProjectsClient({ allProjects = [] }) {
               ))}
             </AnimatePresence>
           </motion.div>
+
+          {/* Empty State */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-20 text-neutral-lighter">
+              <p className="text-xl">No projects found in this category.</p>
+            </div>
+          )}
         </div>
       </main>
 
