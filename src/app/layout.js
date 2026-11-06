@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import GridBackground from "../blocks/Backgrounds/GridBackground.jsx";
+import { Analytics } from "@vercel/analytics/next";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -63,6 +64,7 @@ export default function RootLayout({ children }) {
         </div>
 
         <div id="modal-root" />
+        <Analytics />
       </body>
     </html>
   );
