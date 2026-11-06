@@ -1,40 +1,82 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ModelViewer from "./ModelViewer";
 import CodeBlock from "./CodeBlock";
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
 const ProjectModal = ({ project, onClose, isOpen }) => {
+  const dialogRef = useRef(null);
+  const closeBtnRef = useRef(null);
+  const lastFocused = useRef(null);
+
+  // Parents clear `project` on close, which used to unmount the modal before
+  // its exit animation could play. Remember the last project so it can fade out.
+  const lastProject = useRef(project);
+  if (project) lastProject.current = project;
+  const data = project || lastProject.current;
+
+  // Lock page scroll while open. The page scrolls inside #scroll-root (see
+  // layout.js), so that is what must be locked; body/html are kept as a fallback.
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    const targets = [
+      document.getElementById("scroll-root"),
+      document.documentElement,
+      document.body,
+    ].filter(Boolean);
+    const previous = targets.map((el) => el.style.overflow);
+    targets.forEach((el) => {
+      el.style.overflow = "hidden";
+    });
     return () => {
-      document.body.style.overflow = "";
+      targets.forEach((el, i) => {
+        el.style.overflow = previous[i];
+      });
     };
   }, [isOpen]);
 
-  const handleEscapeKey = useCallback(
-    (event) => {
-      if (event.key === "Escape" && isOpen) {
-        onClose();
-      }
-    },
-    [isOpen, onClose],
-  );
-
+  // Move focus into the dialog on open, return it to the card on close.
   useEffect(() => {
-    document.addEventListener("keydown", handleEscapeKey);
+    if (!isOpen) return;
+    lastFocused.current = document.activeElement;
+    const t = setTimeout(() => closeBtnRef.current?.focus(), 50);
     return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
+      clearTimeout(t);
+      lastFocused.current?.focus?.();
     };
-  }, [handleEscapeKey]);
+  }, [isOpen]);
 
-  if (!project) return null;
+  // Escape to close + keep Tab focus inside the dialog.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const nodes = dialogRef.current.querySelectorAll(FOCUSABLE);
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!data) return null;
 
   return (
     <AnimatePresence>
@@ -43,7 +85,7 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50000 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
         >
           {/* Overlay */}
           <motion.div
@@ -51,31 +93,37 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             animate={{ opacity: 0.7 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
+            aria-hidden="true"
             className="absolute inset-0 bg-neutral-darkest backdrop-blur-sm"
           ></motion.div>
 
           {/* Modal Container */}
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
             initial={{ y: "100vh", opacity: 0 }}
             animate={{ y: "0", opacity: 1 }}
             exit={{ y: "100vh", opacity: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-medium [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-accent"
+            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain z-10 p-6 sm:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-medium [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-accent"
           >
             <button
+              ref={closeBtnRef}
               onClick={onClose}
-              className="absolute top-4 right-4 text-neutral-lighter hover:text-foreground text-2xl"
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-neutral-lighter hover:text-foreground text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               aria-label="Close modal"
             >
-              ×
+              <span aria-hidden="true">×</span>
             </button>
 
             {/* --- PRIMARY IMAGE --- */}
-            {project.imageUrl && (
+            {data.imageUrl && (
               <div className="mb-6 overflow-hidden rounded-md">
                 <Image
-                  src={project.imageUrl}
-                  alt={project.title}
+                  src={data.imageUrl}
+                  alt={data.title}
                   width={800}
                   height={450}
                   className="w-full h-auto max-h-80 object-cover"
@@ -83,18 +131,21 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               </div>
             )}
 
-            <h2 className="text-4xl md:text-5xl font-bold text-accent mb-2 font-playfair">
-              {project.title}
+            <h2
+              id="project-modal-title"
+              className="text-4xl md:text-5xl font-bold text-accent mb-2 font-playfair"
+            >
+              {data.title}
             </h2>
 
             <p className="text-accent-hover font-semibold mb-4 text-lg">
-              {project.role}
+              {data.role}
             </p>
 
             {/* Tech Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
-              {project.tech &&
-                project.tech.map((item) => (
+              {data.tech &&
+                data.tech.map((item) => (
                   <span
                     key={item}
                     className="bg-neutral-medium text-neutral-light text-sm font-semibold px-4 py-1 rounded-full"
@@ -111,46 +162,50 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
                   About the Project:
                 </h3>
                 <p>
-                  {project.longDescription ||
-                    "No detailed description available."}
+                  {data.longDescription || "No detailed description available."}
                 </p>
               </section>
 
               {/* --- TECHNICAL BREAKDOWN GALLERY (IMAGE 2 & 3) --- */}
-              {(project.image2Url || project.image3Url) && (
+              {(data.image2Url || data.image3Url) && (
                 <section className="space-y-4 pt-4 border-t border-neutral-medium">
                   <h3 className="text-xl font-bold text-foreground">
                     Technical Breakdown:
                   </h3>
                   <div className="flex flex-col gap-6">
-                    {project.image2Url && (
+                    {data.image2Url && (
                       <div className="space-y-2">
                         <Image
-                          src={project.image2Url}
-                          alt="Technical map breakdown"
+                          src={data.image2Url}
+                          alt={
+                            data.image2Subtitle ||
+                            `${data.title} technical breakdown`
+                          }
                           width={800}
                           height={450}
                           className="rounded-md border border-neutral-medium object-cover w-full h-48"
                         />
-                        {project.image2Subtitle && (
+                        {data.image2Subtitle && (
                           <p className="text-xs text-neutral-lighter italic">
-                            {project.image2Subtitle}
+                            {data.image2Subtitle}
                           </p>
                         )}
                       </div>
                     )}
-                    {project.image3Url && (
+                    {data.image3Url && (
                       <div className="space-y-2">
                         <Image
-                          src={project.image3Url}
-                          alt="Graph or detail view"
+                          src={data.image3Url}
+                          alt={
+                            data.image3Subtitle || `${data.title} detail view`
+                          }
                           width={800}
                           height={450}
                           className="rounded-md border border-neutral-medium object-cover w-full h-48"
                         />
-                        {project.image3Subtitle && (
+                        {data.image3Subtitle && (
                           <p className="text-xs text-neutral-lighter italic">
-                            {project.image3Subtitle}
+                            {data.image3Subtitle}
                           </p>
                         )}
                       </div>
@@ -160,59 +215,59 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
               )}
 
               {/* Features List */}
-              {project.features && (
+              {data.features && (
                 <section>
                   <h3 className="text-xl font-bold text-foreground mb-2">
                     Key Features:
                   </h3>
-                  {Array.isArray(project.features) ? (
+                  {Array.isArray(data.features) ? (
                     <ul className="list-disc list-inside space-y-1">
-                      {project.features.map((feature, index) => (
-                        <li key={index}>{feature}</li>
+                      {data.features.map((feature) => (
+                        <li key={feature}>{feature}</li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="whitespace-pre-line">{project.features}</p>
+                    <p className="whitespace-pre-line">{data.features}</p>
                   )}
                 </section>
               )}
 
               {/* Challenges */}
-              {project.challenges && (
+              {data.challenges && (
                 <section>
                   <h3 className="text-xl font-bold text-foreground mb-2">
                     Challenges & Solutions:
                   </h3>
-                  <p>{project.challenges}</p>
+                  <p>{data.challenges}</p>
                 </section>
               )}
             </div>
 
             {/* Optional Extras (Models, Code, etc) */}
-            {project.modelUrl && (
+            {data.modelUrl && (
               <div className="mt-8">
                 <h3 className="text-xl font-bold text-foreground mb-4">
                   Interactive 3D Model
                 </h3>
-                <ModelViewer modelUrl={project.modelUrl} />
+                <ModelViewer modelUrl={data.modelUrl} />
               </div>
             )}
 
-            {project.codeSnippets && (
+            {data.codeSnippets && (
               <div className="mt-8">
                 <h3 className="text-xl font-bold text-foreground mb-4">
                   Code Spotlight
                 </h3>
-                <CodeBlock snippets={project.codeSnippets} />
+                <CodeBlock snippets={data.codeSnippets} />
               </div>
             )}
 
             {/* Links Section */}
-            {project.links && project.links.length > 0 && (
+            {data.links && data.links.length > 0 && (
               <div className="mt-8 flex flex-wrap gap-4">
-                {project.links.map((link, index) => (
+                {data.links.map((link) => (
                   <a
-                    key={index}
+                    key={link.url}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"

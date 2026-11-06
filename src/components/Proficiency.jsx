@@ -6,84 +6,119 @@ import { motion } from "framer-motion";
 
 const softwareTools = [
   {
-    name: "Unreal Engine",
+    name: "Unreal Engine 5",
     icon: "/Logos/white_unreal.png",
-    description: "Advanced Blueprints & C++ for game logic, UI, and systems.",
+    tag: "Engine",
+    description:
+      "Advanced Blueprints, C++ architecture, shaders, and rendering pipelines.",
   },
   {
-    name: "Blender",
-    icon: "/Logos/blender.png",
-    description: "3D modeling, sculpting, rigging, animation, and rendering.",
-  },
-  {
-    name: "Substance Painter",
-    icon: "/Logos/substance-painter.png",
-    description: "Texturing and material creation for 3D assets.",
+    name: "Houdini",
+    icon: "/Logos/houdini.png",
+    tag: "Procedural",
+    description:
+      "Procedural content generation (PCG), VEX scripting, and custom tool building.",
   },
   {
     name: "Substance Designer",
     icon: "/Logos/substance-designer.png",
-    description: "Material synthesis for 3D assets.",
+    tag: "Materials",
+    description:
+      "Procedural material synthesis and node-based texture generation.",
   },
   {
-    name: "Git / GitHub",
-    icon: "/Logos/github.png",
-    description: "Version control for collaborative development.",
+    name: "Gaea",
+    icon: "/Logos/gaea.png",
+    tag: "Environments",
+    description:
+      "Advanced procedural terrain generation and erosion simulation.",
+  },
+  {
+    name: "Blender",
+    icon: "/Logos/blender.png",
+    tag: "3D Pipeline",
+    description:
+      "3D asset creation, topology optimization, and custom Python tooling.",
+  },
+  {
+    name: "Substance Painter",
+    icon: "/Logos/substance-painter.png",
+    tag: "Materials",
+    description: "High-fidelity texturing and PBR material application.",
+  },
+  {
+    name: "Visual Studio",
+    icon: "/Logos/visual_studio.png",
+    tag: "Development",
+    description:
+      "Primary IDE for heavy C++ Engine development, profiling, and debugging.",
   },
   {
     name: "Visual Studio Code",
     icon: "/Logos/visual_studio_code.png",
-    description: "Lightweight code editor with extensive plugin support.",
+    tag: "Development",
+    description:
+      "Lightweight editor for Python pipeline scripts, HLSL/GLSL, and web tech.",
+  },
+  {
+    name: "Git / GitHub",
+    icon: "/Logos/github.png",
+    tag: "Version Control",
+    description:
+      "Source control and Git LFS management for heavy game assets and collaborative branches.",
   },
 ];
 
-const Proficiency = ({ className }) => {
+const Proficiency = ({ className = "" }) => {
   return (
-    <section id="proficiency" className={"py-20 " + className}>
-      {/* Added max-w-6xl to keep the grid from stretching too far on ultra-wide screens */}
-      <div className="container mx-auto px-8 text-center max-w-6xl">
+    <section
+      id="proficiency"
+      className={`min-h-screen flex flex-col justify-center py-20 ${className}`}
+    >
+      <div className="container mx-auto px-8 max-w-6xl">
         <SectionTitleAnimated colorClass="text-accent">
-          My Toolset
+          Toolkit
         </SectionTitleAnimated>
 
-        {/* 
-          Grid layout specifically tuned for 6 items:
-          Mobile: 1 col | Tablet: 2 cols | Desktop: 3 cols
-          This creates a perfect 3x2 layout on desktop with no awkward single items.
-        */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        {/* 9 items = a clean 3x3 grid on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {softwareTools.map((tool, index) => (
             <motion.div
-              key={index}
-              // Added group for hover targets, border, translate hover effect, and softer rounded corners
-              className="group relative flex flex-col items-center p-8 rounded-2xl bg-neutral-dark border border-white/5 shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-white/10"
+              key={tool.name}
+              className="group relative flex flex-col p-8 rounded-2xl bg-card-background border border-neutral-medium/20 shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_8px_30px_rgba(var(--accent-rgb),0.15)]"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{
-                duration: 0.5,
-                delay: index * 0.1,
+                duration: 0.4,
+                delay: index * 0.05,
                 ease: "easeOut",
               }}
             >
-              {/* Subtle hover background gradient effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              <div className="relative flex flex-col items-center flex-grow text-center z-10">
-                {/* New framed background for the icons that scales on hover */}
-                <div className="h-20 w-20 mb-6 flex items-center justify-center rounded-xl bg-black/20 shadow-inner group-hover:scale-110 transition-transform duration-500 ease-out p-4">
-                  <img
-                    src={tool.icon}
-                    alt={tool.name + " Logo"}
-                    className="h-full w-full object-contain filter drop-shadow-md"
-                  />
+              <div className="relative flex flex-col flex-grow z-10 w-full">
+                {/* Header: icon left, text right */}
+                <div className="flex items-center w-full mb-4 gap-4">
+                  <div className="h-16 w-16 flex-shrink-0 flex items-center justify-center rounded-xl bg-background/50 shadow-inner group-hover:scale-105 transition-transform duration-300 p-3 border border-white/5">
+                    <img
+                      src={tool.icon}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-full w-full object-contain filter drop-shadow-md"
+                    />
+                  </div>
+                  <div className="flex flex-col items-start text-left">
+                    <h3 className="text-lg font-bold text-foreground tracking-wide leading-tight">
+                      {tool.name}
+                    </h3>
+                    <span className="text-xs font-semibold text-accent/80 uppercase tracking-wider mt-1">
+                      {tool.tag}
+                    </span>
+                  </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-foreground mb-3 tracking-wide">
-                  {tool.name}
-                </h3>
-
-                <p className="text-sm text-neutral-lighter font-montserrat leading-relaxed">
+                <p className="text-sm text-neutral-light font-montserrat leading-relaxed text-left w-full mt-2">
                   {tool.description}
                 </p>
               </div>

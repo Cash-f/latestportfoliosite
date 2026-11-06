@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 
 const SectionTitleAnimated = ({
   children,
-  className,
+  subtitle,
+  className = "",
   colorClass = "text-white",
 }) => {
   return (
@@ -21,6 +22,11 @@ const SectionTitleAnimated = ({
       >
         {children}
       </h2>
+      {subtitle && (
+        <p className="mt-4 text-neutral-light max-w-2xl mx-auto font-montserrat">
+          {subtitle}
+        </p>
+      )}
     </motion.div>
   );
 };
