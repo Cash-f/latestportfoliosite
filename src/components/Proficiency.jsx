@@ -48,7 +48,7 @@ const softwareTools = [
   },
   {
     name: "Visual Studio",
-    icon: "/Logos/visual_studio.png",
+    icon: "/Logos/Visual_Studio.png",
     tag: "Development",
     description:
       "Primary IDE for heavy C++ Engine development, profiling, and debugging.",
@@ -73,7 +73,7 @@ const Proficiency = ({ className = "" }) => {
   return (
     <section
       id="proficiency"
-      className={`min-h-screen flex flex-col justify-center py-20 ${className}`}
+      className={` relative min-h-screen flex flex-col justify-center py-20 ${className}`}
     >
       <div className="container mx-auto px-8 max-w-6xl">
         <SectionTitleAnimated colorClass="text-accent">
@@ -126,6 +126,35 @@ const Proficiency = ({ className = "" }) => {
           ))}
         </div>
       </div>
+      <a
+        href="#contact"
+        aria-label="Scroll to contact section"
+        className="hidden md:flex mt-20 absolute bottom-8 left-1/2 -translate-x-1/2
+    flex-col items-center gap-3 group text-neutral-lighter/50
+    hover:text-accent transition-colors duration-500"
+      >
+        <span
+          className="text-[12px] uppercase tracking-[0.35em]
+      font-montserrat group-hover:tracking-[0.5em]
+      transition-all duration-500"
+        >
+          About Me
+        </span>
+
+        <span className="relative h-12 w-px overflow-hidden bg-neutral-lighter/20">
+          <span
+            className="absolute inset-x-0 top-0 h-1/2 bg-accent
+        animate-scroll-line"
+          />
+        </span>
+
+        <span
+          className="text-xs opacity-0 -mt-2 group-hover:opacity-100
+      group-hover:translate-y-1 transition-all duration-300"
+        >
+          ↓
+        </span>
+      </a>
     </section>
   );
 };

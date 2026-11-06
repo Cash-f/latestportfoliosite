@@ -48,14 +48,14 @@ const Hero = ({ className = "", onModalToggle }) => {
       */}
       <div className="container mx-auto w-full px-8 flex flex-col md:flex-row items-center gap-8 md:gap-12">
         <div className="md:w-1/2 text-center md:text-left pt-24 md:pt-0">
-          <h1 className="text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl font-playfair tracking-tighter text-foreground">
+          <h1 className="text-5xl md:text-6xl xl:text-7xl 2xl:text-8xl font-playfair whitespace-nowrap tracking-tighter text-foreground">
             Charlie Ash-Farmer
             <br />
             <span className="text-accent font-playfair">Technical Artist</span>
           </h1>
           <p className="mt-6 text-lg md:text-xl max-w-xl font-montserrat text-neutral-light mx-auto md:mx-0">
-            I specialize in shaders, procedural content generation, and scene
-            optimization to build beautiful, highly-performant worlds.
+            I specialise in shaders, procedural content generation, and scene
+            optimisation to build beautiful, highly-performant worlds.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start">
@@ -81,28 +81,41 @@ const Hero = ({ className = "", onModalToggle }) => {
           <ShaderField />
           <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 flex flex-col items-end gap-2">
             <p className="text-[10px] md:text-xs font-geist-mono text-neutral-lighter/70 tracking-wide text-right pointer-events-none">
-              Live fragment shader · domain-warped fbm → iso-contours
-              <br />1 draw call · 0 textures · move your cursor
+              Live fragment shader
+              <br />1 draw call - 0 textures
             </p>
-            <button
-              type="button"
-              onClick={openSource}
-              className="font-geist-mono text-xs text-accent border border-accent/40 hover:bg-accent/10 hover:border-accent rounded-full px-4 py-1.5 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              {"</>"} View GLSL source
-            </button>
           </div>
         </div>
       </div>
 
-      {/* Scroll cue */}
       <a
         href="#work"
         aria-label="Scroll to featured work"
-        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-neutral-lighter hover:text-accent transition-colors"
+        className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2
+    flex-col items-center gap-3 group text-neutral-lighter/50
+    hover:text-accent transition-colors duration-500"
       >
-        <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <span className="block w-px h-8 bg-current animate-bounce" />
+        <span
+          className="text-[12px] uppercase tracking-[0.35em]
+    font-montserrat group-hover:tracking-[0.5em]
+    transition-all duration-500"
+        >
+          Recent Work
+        </span>
+
+        <span className="relative h-12 w-px overflow-hidden bg-neutral-lighter/20">
+          <span
+            className="absolute inset-x-0 top-0 h-1/2 bg-accent
+      animate-scroll-line"
+          />
+        </span>
+
+        <span
+          className="text-xs opacity-0 -mt-2 group-hover:opacity-100
+    group-hover:translate-y-1 transition-all duration-300"
+        >
+          ↓
+        </span>
       </a>
 
       <ProjectModal

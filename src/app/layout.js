@@ -35,25 +35,29 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${playfair.variable}`}
+      className={`${montserrat.variable} ${playfair.variable} ${geistSans.variable} ${geistMono.variable}`}
     >
-      <body className="antialiased font-montserrat bg-background text-foreground overflow-x-hidden">
+      <body className="antialiased bg-background text-foreground overflow-x-hidden font-montserrat">
+        {/* Layer 0: Grid */}
         <GridBackground
           size={50}
           color="rgba(255, 255, 255, 0.05)"
           thickness={1}
           fade={true}
-          className="fixed inset-0 z-0"
+          className="fixed inset-0 z-0 pointer-events-none"
         />
-        {/*
-          This div is the real scroller (and the snap container), so:
-          - Header and ProjectModal look it up by id="scroll-root"
-          - scroll-smooth lives HERE; on <html> it does nothing because
-            <html> never scrolls in this layout
-        */}
+
+        {/* Layer 1: Ambient lighting */}
+        <div className="ambient-background" aria-hidden="true">
+          <div className="ambient-glow ambient-glow-one" />
+          <div className="ambient-glow ambient-glow-two" />
+          <div className="ambient-glow ambient-glow-three" />
+        </div>
+
+        {/* Layer 2: Website content */}
         <div
           id="scroll-root"
-          className="relative h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth"
+          className="relative z-10 h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth"
         >
           {children}
         </div>

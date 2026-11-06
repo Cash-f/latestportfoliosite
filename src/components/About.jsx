@@ -22,7 +22,6 @@ const timelineData = [
   {
     year: "2024",
     title: "Game Development at UCNL",
-    // TODO: replace with what you actually built/learned (named project, pipeline, result)
     description: "Learning professional workflows and theoretical knowledge",
     tech: ["Academic Studies", "Teamwork"],
   },
@@ -46,11 +45,8 @@ const About = ({ className = "" }) => {
   return (
     <section
       id="about"
-      className={`min-h-screen flex flex-col pt-[10.5rem] pb-12 relative overflow-hidden ${className}`}
+      className={` relative min-h-screen flex flex-col pt-[10.5rem] pb-40 overflow-hidden ${className}`}
     >
-      {/* Decorative background element */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-accent/5 to-transparent pointer-events-none" />
-
       <div className="container mx-auto px-8 relative z-10">
         <SectionTitleAnimated colorClass="text-accent">
           About Me
@@ -72,10 +68,9 @@ const About = ({ className = "" }) => {
               seamlessly in-engine.
             </p>
             <p className="text-lg text-neutral-light leading-relaxed font-montserrat">
-              My background spans both 3D asset pipelines and systems
-              programming, allowing me to author complex shaders, develop
-              procedural generation tools, and profile scenes for strict
-              performance targets.
+              I enjoy authoring complex shaders, developing procedural
+              generation tools, and profiling scenes for strict performance
+              targets.
             </p>
           </motion.div>
         </div>
@@ -125,6 +120,36 @@ const About = ({ className = "" }) => {
           </div>
         </div>
       </div>
+      {/* Scroll Que */}
+      <a
+        href="#contact"
+        aria-label="Scroll to contact section"
+        className="hidden md:flex mt-20 absolute bottom-8 left-1/2 -translate-x-1/2
+    flex-col items-center gap-3 group text-neutral-lighter/50
+    hover:text-accent transition-colors duration-500"
+      >
+        <span
+          className="text-[12px] uppercase tracking-[0.35em]
+      font-montserrat group-hover:tracking-[0.5em]
+      transition-all duration-500"
+        >
+          Contact Details
+        </span>
+
+        <span className="relative h-12 w-px overflow-hidden bg-neutral-lighter/20">
+          <span
+            className="absolute inset-x-0 top-0 h-1/2 bg-accent
+        animate-scroll-line"
+          />
+        </span>
+
+        <span
+          className="text-xs opacity-0 -mt-2 group-hover:opacity-100
+      group-hover:translate-y-1 transition-all duration-300"
+        >
+          ↓
+        </span>
+      </a>
     </section>
   );
 };

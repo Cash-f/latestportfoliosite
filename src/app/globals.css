@@ -28,7 +28,7 @@
   --font-playfair-static: var(--font-playfair);
 
   --grid-color: rgba(249, 115, 22, 0.05);
-  --noise-opacity: 0.05;
+  --noise-opacity: 0.07;
   --grid-size: 40px;
   --grid-thickness: 1px;
   --accent-rgb: 249, 115, 22;
@@ -66,6 +66,19 @@
     background-size: var(--grid-size) var(--grid-size);
   }
 
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--noise-opacity);
+
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    background-size: 180px 180px;
+  }
+
   @keyframes flash {
     0%,
     100% {
@@ -78,6 +91,137 @@
 
   .animate-flash {
     animation: flash 1.5s infinite alternate;
+  }
+}
+
+@keyframes scroll-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 1.8s ease-in-out infinite;
+}
+
+.ambient-background {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Shared glow properties */
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  will-change: transform;
+}
+
+/* Primary orange light */
+.ambient-glow-one {
+  width: 65vw;
+  height: 65vw;
+  max-width: 900px;
+  max-height: 900px;
+
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.055) 0%,
+    rgba(249, 115, 22, 0.018) 40%,
+    transparent 70%
+  );
+
+  top: -35%;
+  left: 5%;
+
+  animation: ambient-drift-one 38s ease-in-out infinite alternate;
+}
+
+/* Secondary, weaker light */
+.ambient-glow-two {
+  width: 55vw;
+  height: 55vw;
+  max-width: 750px;
+  max-height: 750px;
+
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.035) 0%,
+    rgba(249, 115, 22, 0.01) 45%,
+    transparent 70%
+  );
+
+  top: 25%;
+  right: -25%;
+
+  animation: ambient-drift-two 46s ease-in-out infinite alternate;
+}
+
+/* Subtle lower ambient light */
+.ambient-glow-three {
+  width: 60vw;
+  height: 60vw;
+  max-width: 800px;
+  max-height: 800px;
+
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.025) 0%,
+    transparent 65%
+  );
+
+  bottom: -45%;
+  left: 20%;
+
+  animation: ambient-drift-three 52s ease-in-out infinite alternate;
+}
+
+/* Independent movement patterns */
+@keyframes ambient-drift-one {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(12vw, 8vh) scale(1.15);
+  }
+  100% {
+    transform: translate(5vw, 18vh) scale(0.95);
+  }
+}
+
+@keyframes ambient-drift-two {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-12vw, -10vh) scale(1.2);
+  }
+  100% {
+    transform: translate(-5vw, 8vh) scale(0.9);
+  }
+}
+
+@keyframes ambient-drift-three {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(10vw, -12vh) scale(1.1);
+  }
+  100% {
+    transform: translate(-8vw, -5vh) scale(1.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-glow {
+    animation: none;
   }
 }
 

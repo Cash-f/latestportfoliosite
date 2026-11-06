@@ -97,7 +97,6 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             className="absolute inset-0 bg-neutral-darkest backdrop-blur-sm"
           ></motion.div>
 
-          {/* Modal Container */}
           <motion.div
             ref={dialogRef}
             role="dialog"
@@ -107,177 +106,185 @@ const ProjectModal = ({ project, onClose, isOpen }) => {
             animate={{ y: "0", opacity: 1 }}
             exit={{ y: "100vh", opacity: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="relative bg-neutral-dark rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain z-10 p-6 sm:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-medium [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-accent"
+            // MATCHED STYLES HERE:
+            className="relative bg-card-background border border-neutral-medium/20 rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] w-full max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain z-10 p-6 sm:p-8 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-medium [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-accent"
           >
-            <button
-              ref={closeBtnRef}
-              onClick={onClose}
-              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-neutral-lighter hover:text-foreground text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              aria-label="Close modal"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
+            {/* Optional: Add the same subtle gradient to the modal background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-50 pointer-events-none z-0" />
 
-            {/* --- PRIMARY IMAGE --- */}
-            {data.imageUrl && (
-              <div className="mb-6 overflow-hidden rounded-md">
-                <Image
-                  src={data.imageUrl}
-                  alt={data.title}
-                  width={800}
-                  height={450}
-                  className="w-full h-auto max-h-80 object-cover"
-                />
-              </div>
-            )}
+            {/* Wrap your existing close button and modal content in a relative z-10 div */}
+            <div className="relative z-10">
+              <button
+                ref={closeBtnRef}
+                onClick={onClose}
+                className="absolute -top-2 -right-2 w-10 h-10 flex items-center justify-center rounded-full bg-neutral-dark/50 text-neutral-lighter hover:text-foreground text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                aria-label="Close modal"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
 
-            <h2
-              id="project-modal-title"
-              className="text-4xl md:text-5xl font-bold text-accent mb-2 font-playfair"
-            >
-              {data.title}
-            </h2>
-
-            <p className="text-accent-hover font-semibold mb-4 text-lg">
-              {data.role}
-            </p>
-
-            {/* Tech Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {data.tech &&
-                data.tech.map((item) => (
-                  <span
-                    key={item}
-                    className="bg-neutral-medium text-neutral-light text-sm font-semibold px-4 py-1 rounded-full"
-                  >
-                    {item}
-                  </span>
-                ))}
-            </div>
-
-            {/* --- CONTENT SECTIONS --- */}
-            <div className="text-neutral-light leading-relaxed font-montserrat space-y-6">
-              <section>
-                <h3 className="text-xl font-bold text-foreground mb-2">
-                  About the Project:
-                </h3>
-                <p>
-                  {data.longDescription || "No detailed description available."}
-                </p>
-              </section>
-
-              {/* --- TECHNICAL BREAKDOWN GALLERY (IMAGE 2 & 3) --- */}
-              {(data.image2Url || data.image3Url) && (
-                <section className="space-y-4 pt-4 border-t border-neutral-medium">
-                  <h3 className="text-xl font-bold text-foreground">
-                    Technical Breakdown:
-                  </h3>
-                  <div className="flex flex-col gap-6">
-                    {data.image2Url && (
-                      <div className="space-y-2">
-                        <Image
-                          src={data.image2Url}
-                          alt={
-                            data.image2Subtitle ||
-                            `${data.title} technical breakdown`
-                          }
-                          width={800}
-                          height={450}
-                          className="rounded-md border border-neutral-medium object-cover w-full h-48"
-                        />
-                        {data.image2Subtitle && (
-                          <p className="text-xs text-neutral-lighter italic">
-                            {data.image2Subtitle}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    {data.image3Url && (
-                      <div className="space-y-2">
-                        <Image
-                          src={data.image3Url}
-                          alt={
-                            data.image3Subtitle || `${data.title} detail view`
-                          }
-                          width={800}
-                          height={450}
-                          className="rounded-md border border-neutral-medium object-cover w-full h-48"
-                        />
-                        {data.image3Subtitle && (
-                          <p className="text-xs text-neutral-lighter italic">
-                            {data.image3Subtitle}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </section>
+              {/* --- PRIMARY IMAGE --- */}
+              {data.imageUrl && (
+                <div className="mb-6 overflow-hidden rounded-md">
+                  <Image
+                    src={data.imageUrl}
+                    alt={data.title}
+                    width={800}
+                    height={450}
+                    className="w-full h-auto max-h-80 object-cover"
+                  />
+                </div>
               )}
 
-              {/* Features List */}
-              {data.features && (
+              <h2
+                id="project-modal-title"
+                className="text-4xl md:text-5xl font-bold text-accent mb-2 font-playfair"
+              >
+                {data.title}
+              </h2>
+
+              <p className="text-accent-hover font-semibold mb-4 text-lg">
+                {data.role}
+              </p>
+
+              {/* Tech Tags */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {data.tech &&
+                  data.tech.map((item) => (
+                    <span
+                      key={item}
+                      className="bg-neutral-medium text-neutral-light text-sm font-semibold px-4 py-1 rounded-full"
+                    >
+                      {item}
+                    </span>
+                  ))}
+              </div>
+
+              {/* --- CONTENT SECTIONS --- */}
+              <div className="text-neutral-light leading-relaxed font-montserrat space-y-6">
                 <section>
                   <h3 className="text-xl font-bold text-foreground mb-2">
-                    Key Features:
+                    About the Project:
                   </h3>
-                  {Array.isArray(data.features) ? (
-                    <ul className="list-disc list-inside space-y-1">
-                      {data.features.map((feature) => (
-                        <li key={feature}>{feature}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="whitespace-pre-line">{data.features}</p>
-                  )}
+                  <p>
+                    {data.longDescription ||
+                      "No detailed description available."}
+                  </p>
                 </section>
+
+                {/* --- TECHNICAL BREAKDOWN GALLERY (IMAGE 2 & 3) --- */}
+                {(data.image2Url || data.image3Url) && (
+                  <section className="space-y-4 pt-4 border-t border-neutral-medium">
+                    <h3 className="text-xl font-bold text-foreground">
+                      Technical Breakdown:
+                    </h3>
+                    <div className="flex flex-col gap-6">
+                      {data.image2Url && (
+                        <div className="space-y-2">
+                          <Image
+                            src={data.image2Url}
+                            alt={
+                              data.image2Subtitle ||
+                              `${data.title} technical breakdown`
+                            }
+                            width={800}
+                            height={450}
+                            className="rounded-md border border-neutral-medium object-cover w-full h-48"
+                          />
+                          {data.image2Subtitle && (
+                            <p className="text-xs text-neutral-lighter italic">
+                              {data.image2Subtitle}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {data.image3Url && (
+                        <div className="space-y-2">
+                          <Image
+                            src={data.image3Url}
+                            alt={
+                              data.image3Subtitle || `${data.title} detail view`
+                            }
+                            width={800}
+                            height={450}
+                            className="rounded-md border border-neutral-medium object-cover w-full h-48"
+                          />
+                          {data.image3Subtitle && (
+                            <p className="text-xs text-neutral-lighter italic">
+                              {data.image3Subtitle}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                )}
+
+                {/* Features List */}
+                {data.features && (
+                  <section>
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      Key Features:
+                    </h3>
+                    {Array.isArray(data.features) ? (
+                      <ul className="list-disc list-inside space-y-1">
+                        {data.features.map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="whitespace-pre-line">{data.features}</p>
+                    )}
+                  </section>
+                )}
+
+                {/* Challenges */}
+                {data.challenges && (
+                  <section>
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      Challenges & Solutions:
+                    </h3>
+                    <p>{data.challenges}</p>
+                  </section>
+                )}
+              </div>
+
+              {/* Optional Extras (Models, Code, etc) */}
+              {data.modelUrl && (
+                <div className="mt-8">
+                  <h3 className="text-xl font-bold text-foreground mb-4">
+                    Interactive 3D Model
+                  </h3>
+                  <ModelViewer modelUrl={data.modelUrl} />
+                </div>
               )}
 
-              {/* Challenges */}
-              {data.challenges && (
-                <section>
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    Challenges & Solutions:
+              {data.codeSnippets && (
+                <div className="mt-8">
+                  <h3 className="text-xl font-bold text-foreground mb-4">
+                    Code Spotlight
                   </h3>
-                  <p>{data.challenges}</p>
-                </section>
+                  <CodeBlock snippets={data.codeSnippets} />
+                </div>
+              )}
+
+              {/* Links Section */}
+              {data.links && data.links.length > 0 && (
+                <div className="mt-8 flex flex-wrap gap-4">
+                  {data.links.map((link) => (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-accent hover:bg-accent-hover text-foreground font-bold py-2 px-6 rounded-md transition-colors duration-300"
+                    >
+                      {link.text || "View Project"}
+                    </a>
+                  ))}
+                </div>
               )}
             </div>
-
-            {/* Optional Extras (Models, Code, etc) */}
-            {data.modelUrl && (
-              <div className="mt-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Interactive 3D Model
-                </h3>
-                <ModelViewer modelUrl={data.modelUrl} />
-              </div>
-            )}
-
-            {data.codeSnippets && (
-              <div className="mt-8">
-                <h3 className="text-xl font-bold text-foreground mb-4">
-                  Code Spotlight
-                </h3>
-                <CodeBlock snippets={data.codeSnippets} />
-              </div>
-            )}
-
-            {/* Links Section */}
-            {data.links && data.links.length > 0 && (
-              <div className="mt-8 flex flex-wrap gap-4">
-                {data.links.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-accent hover:bg-accent-hover text-foreground font-bold py-2 px-6 rounded-md transition-colors duration-300"
-                  >
-                    {link.text || "View Project"}
-                  </a>
-                ))}
-              </div>
-            )}
           </motion.div>
         </motion.div>
       )}
