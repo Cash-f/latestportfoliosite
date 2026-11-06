@@ -37,7 +37,6 @@ export default function HomeClientWrapper({ allProjects = [] }) {
 
       <Proficiency className="min-h-screen snap-start flex flex-col justify-center" />
 
-      {/* No justify-center so the tall timeline starts at the top */}
       <About className="min-h-screen snap-start flex flex-col pt-42 pb-12" />
 
       <Contact className="min-h-screen snap-start flex flex-col justify-center" />

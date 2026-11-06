@@ -127,8 +127,8 @@ const Proficiency = ({ className = "" }) => {
         </div>
       </div>
       <a
-        href="#contact"
-        aria-label="Scroll to contact section"
+        href="#about"
+        aria-label="Scroll to about section"
         className="hidden md:flex mt-20 absolute bottom-8 left-1/2 -translate-x-1/2
     flex-col items-center gap-3 group text-neutral-lighter/50
     hover:text-accent transition-colors duration-500"

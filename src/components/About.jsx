@@ -8,35 +8,48 @@ const timelineData = [
   {
     year: "2026",
     title: "Team Leadership & Production",
-    description:
-      "Acting as Project Lead for a collaborative university project, managing agile workflows, version control (Gitflow), and cross-disciplinary communication.",
+    bullets: [
+      "Acted as Project Lead for a collaborative university project.",
+      "Managed agile workflows and version control using GitDesktop.",
+      "Facilitated cross-disciplinary communication all teams.",
+    ],
     tech: ["Project Management", "Jira & Trello", "Leadership"],
   },
   {
     year: "2025",
     title: "Advanced 3D Art & Scripting",
-    description:
-      "Developing high-fidelity hero assets, complex hard-surface topology, and technical scripting to support scalable gameplay systems.",
-    tech: ["Hard Surface Modelling", "C# Scripting", "Technical Art"],
+    bullets: [
+      "Developed high-fidelity hero assets with complex hard-surface topology.",
+      "Built technical scripts to support scalable gameplay systems.",
+      "Begun exploring LLM workflow integration for procedural content generation.",
+    ],
+    tech: ["Hard Surface Modelling", "Python Scripting", "Technical Art"],
   },
   {
     year: "2024",
     title: "Game Development at UCNL",
-    description: "Learning professional workflows and theoretical knowledge",
+    bullets: [
+      "Studied professional workflows and theoretical game design knowledge.",
+      "Gained hands-on experience with industry-standard tools and methodologies.",
+    ],
     tech: ["Academic Studies", "Teamwork"],
   },
   {
     year: "2023",
     title: "3D Art & Programming Integration",
-    description:
-      "Bridged the gap between asset creation in Blender and engine implementation, focusing on custom shaders and pipeline optimization.",
+    bullets: [
+      "Bridged the gap between asset creation in Blender and engine implementation.",
+      "Authored custom shaders and optimized rendering pipelines.",
+    ],
     tech: ["Blender", "C++", "Shaders"],
   },
   {
     year: "2022",
     title: "Unreal Engine Solo Project",
-    description:
-      "Architected a large-scale solo project to master the full scope of game production, rendering pipelines, and Blueprint logic.",
+    bullets: [
+      "Architected a solo project to understand full-scope game production.",
+      "Programmed core logic using Blueprints and managed rendering pipelines.",
+    ],
     tech: ["Unreal Engine 5", "Blueprints"],
   },
 ];
@@ -99,12 +112,17 @@ const About = ({ className = "" }) => {
                   </span>
                 </div>
 
-                <p className="text-neutral-light text-lg mb-4 max-w-2xl">
-                  {item.description}
-                </p>
+                {/* Replaced <p> with a <ul> for bullet points */}
+                <ul className="list-disc list-outside ml-5 text-neutral-light text-lg mb-4 max-w-2xl space-y-2 marker:text-accent/70">
+                  {item.bullets.map((bullet, i) => (
+                    <li key={i} className="pl-2">
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
 
                 {item.tech && (
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap mt-4">
                     {item.tech.map((tech) => (
                       <span
                         key={tech}
@@ -120,6 +138,7 @@ const About = ({ className = "" }) => {
           </div>
         </div>
       </div>
+
       {/* Scroll Que */}
       <a
         href="#contact"

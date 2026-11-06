@@ -63,8 +63,8 @@ export default function Features({
       </div>
 
       <a
-        href="#contact"
-        aria-label="Scroll to contact section"
+        href="#proficiency"
+        aria-label="Scroll to Toolkit section"
         className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2
     flex-col items-center gap-3 group text-neutral-lighter/50
     hover:text-accent transition-colors duration-500"
